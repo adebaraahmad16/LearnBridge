@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LearnBridge — Government Day Secondary School, Amule</title>
+  <link rel="icon" type="image/jpeg" href="img/logo.jpeg">
+  <meta name="description" content="LearnBridge digital learning portal for Government Day Secondary School, Amule.">
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons 1.11 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <!-- LearnBridge Design System -->
+  <link rel="stylesheet" href="css/styles.css">
+
+  <script src="js/data.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    // Immediate Role-Based Gateway Router
+    (function routeUser() {
+      const session = Auth.getSession();
+      if (session && session.role === 'admin') {
+        window.location.replace('admin.html');
+      } else if (session && session.role === 'staff') {
+        window.location.replace('staff.html');
+      } else if (session && session.role === 'student') {
+        window.location.replace('student.html');
+      } else {
+        window.location.replace('login.html');
+      }
+    })();
+  </script>
+</head>
+<body class="auth-page-body d-flex align-items-center justify-content-center min-vh-100">
+  <div class="text-center p-4">
+    <div class="brand-logo-icon mx-auto mb-3" style="width:56px;height:56px;">
+      <i class="bi bi-book-half fs-2 text-white"></i>
+    </div>
+    <h4 class="fw-bold text-white mb-2">LearnBridge Digital Portal</h4>
+    <p class="text-sm text-muted mb-4">Government Day Secondary School, Amule</p>
+    <div class="spinner-border text-teal" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <div class="mt-4">
+      <a href="login.html" class="btn btn-sm btn-hub-primary">
+        Go to Portal Sign In <i class="bi bi-arrow-right ms-1"></i>
+      </a>
+    </div>
+  </div>
+</body>
+</html>

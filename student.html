@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Dashboard — LearnBridge | Government Day Secondary School, Amule </title>
+  <link rel="icon" type="image/jpeg" href="img/logo.jpeg">
+  <meta name="description" content="Dedicated Student Learning Dashboard for Government Day Secondary School, Amule. Access subjects, lessons, worksheets, CBT mock exams, and term examination results.">
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons 1.11 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <!-- LearnBridge Design System -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- ================================================================
+       ROUTE GUARD — Runs immediately; redirects to login if not authenticated
+       ================================================================ -->
+  <script src="js/data.js"></script>
+  <script src="js/access.js"></script>
+  <script src="js/auth.js"></script>
+  <script>Auth.requireStudent();</script>
+
+  <!-- ================================================================
+       LEFT SIDEBAR NAVIGATION — Student role
+       Bottom block (pinned): identity → Add Profile Picture → Logout
+       ================================================================ -->
+  <aside class="hub-sidebar" id="hubSidebar" aria-label="Student navigation">
+    <div class="sidebar-brand">
+      <img src="img/logo.jpeg" alt="School Logo">
+      <div class="sidebar-brand-text">
+        <span class="brand-name">LearnBridge</span>
+        <span class="brand-sub">Government Day Secondary School, Amule</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="sidebar-label">Student Portal</div>
+      <a href="#section-overview" class="sidebar-link"><i class="bi bi-speedometer2"></i> Dashboard</a>
+      <a href="#section-library" class="sidebar-link"><i class="bi bi-journal-bookmark"></i> My Subjects</a>
+      <a href="#section-results" class="sidebar-link"><i class="bi bi-file-earmark-spreadsheet"></i> My Results</a>
+      <a href="#section-library" class="sidebar-link"><i class="bi bi-folder-check"></i> Learning Materials</a>
+      <a href="#section-assignments" class="sidebar-link"><i class="bi bi-journal-check"></i> Assignments</a>
+      <a href="#section-cbt" class="sidebar-link"><i class="bi bi-laptop"></i> CBT Mock Exams</a>
+      <a href="#section-announcements" class="sidebar-link"><i class="bi bi-megaphone"></i> Announcements</a>
+      <a href="#section-progress" class="sidebar-link"><i class="bi bi-graph-up-arrow"></i> My Progress</a>
+      <a href="#section-profile" class="sidebar-link"><i class="bi bi-person"></i> Profile</a>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <div class="sidebar-profile-area" id="std-profile-picture-slot">
+        <!-- SINGLE unified profile section: one picture/initials display +
+             name + "Add Profile Picture". No duplicates, no avatar picker. -->
+      </div>
+      <button class="btn btn-danger btn-sm sidebar-logout-btn" onclick="Auth.logout()">
+        <i class="bi bi-box-arrow-right me-1"></i> Logout
+      </button>
+    </div>
+  </aside>
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+  <button class="btn btn-hub-primary sidebar-toggle-btn" id="sidebarToggle" aria-label="Open menu">
+    <i class="bi bi-list fs-5"></i>
+  </button>
+      
+  <!-- ================================================================
+       MAIN DASHBOARD CONTENT
+       ================================================================ -->
+  <main class="hub-main container-fluid px-3 px-lg-4 py-4">
+
+    <!-- WELCOME HERO BANNER -->
+    <div class="row mb-4" id="section-overview">
+      <div class="col-12">
+        <div class="card-hub p-4 border-0" style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.98));">
+          <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+            <div>
+              <div class="d-inline-flex align-items-center gap-2 px-2 py-1 rounded bg-teal bg-opacity-10 text-teal text-xs fw-bold mb-2">
+                <i class="bi bi-mortarboard-fill"></i> Student Portal Active
+              </div>
+              <h3 class="fw-bold mb-1" id="std-hero-greeting">Welcome back, Student!</h3>
+              <p class="text-sm mb-0" style="color:var(--text-muted);" id="std-hero-sub">
+                Explore curriculum lessons, download practice worksheets, access your term report cards, or take timed CBT mock exams.
+              </p>
+            </div>
+
+            <!-- Quick Metrics -->
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+              <div class="px-3 py-2 rounded bg-secondary bg-opacity-10 border border-secondary border-opacity-15 text-center">
+                <div class="text-xs text-muted">Daily Streak</div>
+                <div class="fw-bold fs-5 text-teal" id="std-stat-streak">0 Days</div>
+              </div>
+              <div class="px-3 py-2 rounded bg-secondary bg-opacity-10 border border-secondary border-opacity-15 text-center">
+                <div class="text-xs text-muted">Reward Points</div>
+                <div class="fw-bold fs-5 text-warning" id="std-stat-points">0 pts</div>
+              </div>
+              <div class="px-3 py-2 rounded bg-secondary bg-opacity-10 border border-secondary border-opacity-15 text-center">
+                <div class="text-xs text-muted">Completed Lessons</div>
+                <div class="fw-bold fs-5 text-info" id="std-stat-completed">0</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ANNOUNCEMENTS SECTION -->
+    <div class="row mb-4" id="section-announcements">
+      <div class="col-12">
+        <div class="p-3 rounded d-flex align-items-center justify-content-between gap-3" style="background:rgba(13, 148, 136, 0.1);border:1px solid rgba(13, 148, 136, 0.3);">            <div class="d-flex align-items-center gap-2 text-sm">
+              <i class="bi bi-megaphone-fill text-teal fs-5"></i>            <div>
+              <strong class="text-white">Principal's Notice:</strong>
+              <span class="text-light" id="std-announcement-text"></span>
+            </div>
+          </div>
+          <button class="btn btn-xs btn-teal text-dark fw-bold px-3 py-1" onclick="openActiveStudentReportCard()">
+            View My Report Card
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Announcements list (rendered below the Principal's Notice banner) -->
+    <div class="row mb-4" style="margin-top:-1rem;">
+      <div class="col-12">
+        <div id="student-announcements-list">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ==============================================================
+         SECTION 1: CURRICULUM LESSONS & LEARNING LIBRARY
+         ============================================================== -->
+    <div class="row g-4 mb-5" id="section-library">
+      
+      <!-- Top Title & Level Pills -->
+      <div class="col-12">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+          <div>
+            <h4 class="fw-bold mb-1 d-flex align-items-center gap-2">
+              <i class="bi bi-book text-teal"></i> Subjects &amp; Learning Library
+            </h4>
+            <p class="text-xs mb-0" style="color:var(--text-muted);">
+              Approved curriculum materials for your class — notes, practice quizzes, and worksheets assigned to your class and department.
+            </p>
+          </div>
+
+          <!-- Search & Filter Controls -->
+          <div class="d-flex align-items-center gap-2 flex-wrap">
+            <div class="input-group input-group-sm" style="max-width:240px;">
+              <span class="input-group-text bg-secondary bg-opacity-10 border-secondary border-opacity-20 text-muted">
+                <i class="bi bi-search"></i>
+              </span>
+              <input type="text" id="lib-search-input" class="form-control form-control-sm form-control-hub" placeholder="Search topics..." oninput="handleLibraryFilter()">
+            </div>
+            
+            <select id="lib-type-select" class="form-select form-select-sm form-select-hub" style="max-width:140px;" onchange="handleLibraryFilter()">
+              <option value="all">All Formats</option>
+              <option value="pdf">PDF Documents</option>
+              <option value="video">Videos</option>
+              <option value="document">Word Documents</option>
+              <option value="presentation">Presentations</option>
+              <option value="image">Images</option>
+              <option value="other">Other Materials</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- My Class Badge — scoped to the logged-in student's own class; other levels are never shown -->
+        <div class="d-flex align-items-center gap-2 mt-3 flex-wrap" id="my-class-badge">
+          <!-- Populated by JS -->
+        </div>
+
+        <!-- Subject Tags Row -->
+        <div class="d-flex gap-2 mt-3 overflow-x-auto pb-2" id="lib-subject-tags">
+          <!-- Subject pills injected by JS -->
+        </div>
+      </div>
+
+      <!-- Material Grid -->
+      <div class="col-12">
+        <div class="row g-3" id="lib-resources-grid">
+          <!-- Material cards populated by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ==============================================================
+         SECTION 2: CBT MOCK EXAMS & TIMED TESTS
+         ============================================================== -->
+    <div class="row g-4 mb-5" id="section-cbt">
+      <div class="col-12">
+        <div class="card-hub p-4">
+          <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+            <div>
+              <div class="d-inline-flex align-items-center gap-1 px-2 py-0.5 rounded bg-warning bg-opacity-10 text-warning text-xs fw-bold mb-1">
+                <i class="bi bi-stopwatch-fill"></i> Timed Examination Simulator
+              </div>
+              <h4 class="fw-bold mb-1">CBT Mock Examination Center</h4>
+              <p class="text-xs mb-0 text-muted">
+                Official Nigerian examination test prep for BECE (Junior WAEC), WAEC WASSCE, NECO, and JAMB UTME.
+              </p>
+            </div>
+          </div>
+
+          <!-- Exam Cards Grid -->
+          <div class="row g-3" id="cbt-exams-grid">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==============================================================
+         SECTION 3: MY RESULTS & OFFICIAL DOCUMENTS (NEW)
+         ============================================================== -->
+    <div class="row g-4 mb-5" id="section-results">
+      <div class="col-12">
+        <div class="card-hub p-4">
+          <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+            <div>
+              <div class="d-inline-flex align-items-center gap-1 px-2 py-0.5 rounded bg-teal bg-opacity-10 text-teal text-xs fw-bold mb-1">
+                <i class="bi bi-file-earmark-check-fill"></i> Academic Documents &amp; Assessment Records
+              </div>
+              <h4 class="fw-bold mb-1">My Results &amp; Official Broadsheets</h4>
+              <p class="text-xs mb-0 text-muted">
+                Access your official terminal report card, continuous assessment records, and class broadsheets approved by the Principal.
+              </p>
+            </div>
+
+            <div class="d-flex gap-2">
+              <button class="btn btn-sm btn-teal text-dark fw-bold px-3 py-2" onclick="openActiveStudentReportCard()">
+                <i class="bi bi-award me-1"></i> View My Full Report Card
+              </button>
+            </div>
+          </div>
+
+          <!-- Student Results Documents Grid -->
+          <div class="row g-3" id="student-results-grid">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==============================================================
+         SECTION 4: MY PROGRESS & ACHIEVEMENTS
+         ============================================================== -->
+    <div class="row g-4 mb-5" id="section-progress">
+      <div class="col-lg-6">
+        <div class="card-hub p-4 h-100">
+          <h5 class="fw-bold mb-3 d-flex align-items-center gap-2">
+            <i class="bi bi-trophy text-warning"></i> My Learning Achievements
+          </h5>
+          <div class="d-flex flex-column gap-3" id="achievements-list">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <div class="card-hub p-4 h-100">
+          <h5 class="fw-bold mb-3 d-flex align-items-center gap-2">
+            <i class="bi bi-clock-history text-teal"></i> Recent Learning Activity
+          </h5>
+          <div class="d-flex flex-column gap-2" id="activity-history-list">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==============================================================
+         SECTION 5: ASSIGNMENTS
+         ============================================================== -->
+    <div class="row g-4 mb-5" id="section-assignments">
+      <div class="col-12">
+        <div class="card-hub p-4">
+          <h5 class="fw-bold mb-1 d-flex align-items-center gap-2">
+            <i class="bi bi-journal-check text-teal"></i> My Assignments
+          </h5>
+          <p class="text-xs text-muted">Work and materials assigned to your class will appear here.</p>
+          <div id="student-assignments-list">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==============================================================
+         SECTION 6: PROFILE
+         ============================================================== -->
+    <div class="row g-4 mb-5" id="section-profile">
+      <div class="col-12">
+        <div class="card-hub p-4">
+          <h5 class="fw-bold mb-3 d-flex align-items-center gap-2">
+            <i class="bi bi-person-vcard text-teal"></i> My Profile
+          </h5>
+          <div class="row g-3 text-sm" id="student-profile-info">
+            <!-- Populated by JS -->
+          </div>
+          <p class="text-xs text-muted mt-3 mb-0">Add or change your profile picture using the “Add Profile Picture” option at the bottom of the sidebar.</p>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ================================================================
+       MODAL 1: LESSON READER & WORKSHEET MODAL
+       ================================================================ -->
+  <div class="modal fade" id="lessonReaderModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content bg-dark border-secondary border-opacity-25 text-light">
+        <div class="modal-header border-secondary border-opacity-25">
+          <div>
+            <span class="badge bg-teal text-dark text-xs mb-1" id="reader-subject-badge">Mathematics</span>
+            <h5 class="modal-title fw-bold" id="reader-title">Lesson Title</h5>
+          </div>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4" id="reader-body">
+          <!-- Lesson Body Populated by JS -->
+        </div>
+        <div class="modal-footer border-secondary border-opacity-25 justify-content-between">
+          <button type="button" class="btn btn-sm btn-hub-outline" onclick="window.print()">
+            <i class="bi bi-printer me-1"></i> Print / Save PDF
+          </button>
+          <div class="d-flex gap-2">
+            <button type="button" class="btn btn-sm btn-hub-primary" id="reader-btn-complete" onclick="markCurrentLessonComplete()">
+              <i class="bi bi-check-circle me-1"></i> Mark as Completed (+25 pts)
+            </button>
+            <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================================
+       MODAL 1B: LEARNING MATERIAL VIEWER (PDF / Video / Image / Document)
+       ================================================================ -->
+  <div class="modal fade" id="materialViewerModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content bg-dark border-secondary border-opacity-25 text-light">
+        <div class="modal-header border-secondary border-opacity-25">
+          <div class="d-flex flex-column">
+            <span class="badge bg-teal text-dark text-xs mb-1" id="viewer-subject-badge">Subject</span>
+            <h5 class="modal-title fw-bold" id="viewer-title">Material Title</h5>
+            <div class="text-xs text-muted mt-1">
+              <span id="viewer-meta-class">Class</span> &bull;
+              <span id="viewer-meta-teacher">Teacher</span> &bull;
+              <span id="viewer-meta-date">Date</span>
+            </div>
+          </div>
+          <div class="d-flex gap-2">
+            <button type="button" class="btn btn-sm btn-hub-outline d-none" id="viewer-download-btn">
+              <i class="bi bi-download me-1"></i> Download
+            </button>
+            <button type="button" class="btn btn-sm btn-teal text-dark fw-bold d-none" id="viewer-complete-btn" onclick="markCurrentLessonComplete()">
+              <i class="bi bi-check-circle me-1"></i> Mark as Completed (+25 pts)
+            </button>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+        </div>
+        <div class="modal-body p-4" id="viewer-body">
+          <!-- Material preview (PDF iframe, video player, image or download card) injected by JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================================
+       MODAL 2: CBT EXAM SIMULATOR MODAL
+       ================================================================ -->
+  <div class="modal fade" id="cbtExamModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+      <div class="modal-content" style="background:#0b1120;color:#f8fafc;">
+        
+        <!-- Exam Top Bar -->
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 px-3 px-md-4 py-2 border-bottom border-secondary border-opacity-25" style="background:#0f172a;">
+          <div class="d-flex align-items-center gap-3">
+            <div class="brand-logo-icon" style="width:32px;height:32px;">
+              <i class="bi bi-laptop fs-6 text-white"></i>
+            </div>
+            <div>
+              <div class="fw-bold fs-6" id="cbt-modal-exam-title">JAMB UTME Mock Exam</div>
+              <div class="text-xs text-muted" id="cbt-modal-candidate-info">Candidate: Student</div>
+            </div>
+          </div>
+
+          <!-- Timer & Action -->
+          <div class="d-flex align-items-center gap-3">
+            <div class="d-flex align-items-center gap-2 px-3 py-1 rounded bg-dark border border-secondary border-opacity-25">
+              <i class="bi bi-stopwatch text-danger"></i>
+              <span class="fw-bold font-monospace fs-5 text-teal" id="cbt-timer-display">15:00</span>
+            </div>
+            <button class="btn btn-sm btn-danger px-3" onclick="confirmSubmitCbtExam()">
+              <i class="bi bi-send-check me-1"></i> Submit Exam
+            </button>
+          </div>
+        </div>
+
+        <!-- Exam Work Area -->
+        <div class="modal-body p-4 overflow-y-auto">
+          <div class="container">
+            <div class="row g-4">
+              
+              <!-- Question Display Column -->
+              <div class="col-lg-8">
+                <div class="card-hub p-4 mb-3">
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="badge bg-secondary bg-opacity-25 text-teal px-3 py-2 fs-6" id="cbt-question-number-badge">Question 1 of 5</span>
+                    <span class="text-xs text-muted" id="cbt-question-topic">Topic: Algebra</span>
+                  </div>
+
+                  <!-- Question Text -->
+                  <h5 class="fw-semibold mb-4 lh-base" id="cbt-question-text">Loading question text...</h5>
+
+                  <!-- Options List -->
+                  <div class="d-flex flex-column gap-2 mb-4" id="cbt-options-container">
+                    <!-- Options injected by JS -->
+                  </div>
+
+                  <!-- Navigation Buttons -->
+                  <div class="d-flex justify-content-between align-items-center pt-3 border-top border-secondary border-opacity-15">
+                    <button class="btn btn-sm btn-hub-outline" id="cbt-prev-btn" onclick="prevCbtQuestion()">
+                      <i class="bi bi-arrow-left me-1"></i> Previous
+                    </button>
+                    <button class="btn btn-sm btn-hub-primary" id="cbt-next-btn" onclick="nextCbtQuestion()">
+                      Next <i class="bi bi-arrow-right ms-1"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Question Palette & Tools Column -->
+              <div class="col-lg-4">
+                <!-- Question Navigation Palette -->
+                <div class="card-hub p-3 mb-3">
+                  <h6 class="fw-bold text-xs text-uppercase mb-2 text-muted">Question Palette</h6>
+                  <div class="d-flex flex-wrap gap-2" id="cbt-palette-grid">
+                    <!-- Palette items injected by JS -->
+                  </div>
+                  <div class="d-flex align-items-center gap-3 mt-3 pt-2 border-top border-secondary border-opacity-15 text-xs text-muted">
+                    <div class="d-flex align-items-center gap-1">
+                      <span style="width:12px;height:12px;border-radius:3px;background:var(--teal);"></span> Answered
+                    </div>
+                    <div class="d-flex align-items-center gap-1">
+                      <span style="width:12px;height:12px;border-radius:3px;background:rgba(255,255,255,0.1);"></span> Unanswered
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Simple On-Screen Calculator -->
+                <div class="card-hub p-3">
+                  <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="text-xs fw-bold text-uppercase text-muted">Exam Calculator</span>
+                    <i class="bi bi-calculator text-teal"></i>
+                  </div>
+                  <input type="text" id="calc-display" class="form-control form-control-sm form-control-hub font-monospace text-end mb-2 fs-6" readonly value="0">
+                  <div class="row g-1 text-center font-monospace">
+                    <div class="col-3"><button class="btn btn-sm btn-dark w-100" onclick="calcInput('7')">7</button></div>
+                    <div class="col-3"><button class="btn btn-sm btn-dark w-100" onclick="calcInput('8')">8</button></div>
+                    <div class="col-3"><button class="btn btn-sm btn-dark w-100" onclick="calcInput('9')">9</button></div>
+                    <div class="col-3"><button class="btn btn-sm btn-secondary w-100" onclick="calcInput('/')">/</button></div>
+
+                    <div class="col-3"><button class="btn btn-sm btn-dark w-100" onclick="calcInput('4')">4</button></div>
+                    <div class="col-3"><button class="btn btn-sm btn-dark w-100" onclick="calcInput('5')">5</button></div>
+                    <div class="col-3"><button class="btn btn-sm btn-dark w-100" onclick="calcInput('6')">6</button></div>
+                    <div class="col-3"><button class="btn btn-sm btn-secondary w-100" onclick="calcInput('*')">*</button></div>
+
+                    <div class="col-3"><button class="btn btn-sm btn-dark w-100" onclick="calcInput('1')">1</button></div>
+                    <div class="col-3"><button class="btn btn-sm btn-dark w-100" onclick="calcInput('2')">2</button></div>
+                    <div class="col-3"><button class="btn btn-sm btn-dark w-100" onclick="calcInput('3')">3</button></div>
+                    <div class="col-3"><button class="btn btn-sm btn-secondary w-100" onclick="calcInput('-')">-</button></div>
+
+                    <div class="col-3"><button class="btn btn-sm btn-danger w-100" onclick="calcClear()">C</button></div>
+                    <div class="col-3"><button class="btn btn-sm btn-dark w-100" onclick="calcInput('0')">0</button></div>
+                    <div class="col-3"><button class="btn btn-sm btn-teal text-dark w-100" onclick="calcEquals()">=</button></div>
+                    <div class="col-3"><button class="btn btn-sm btn-secondary w-100" onclick="calcInput('+')">+</button></div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================================
+       MODAL 3: CBT EXAM RESULT MODAL
+       ================================================================ -->
+  <div class="modal fade" id="cbtResultModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content bg-dark border-secondary border-opacity-25 text-light">
+        <div class="modal-header border-secondary border-opacity-25">
+          <h5 class="modal-title fw-bold">
+            <i class="bi bi-award text-warning me-2"></i> CBT Examination Result
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body p-4" id="cbt-result-body">
+          <!-- Result summary injected by JS -->
+        </div>
+        <div class="modal-footer border-secondary border-opacity-25">
+          <button type="button" class="btn btn-sm btn-hub-primary" data-bs-dismiss="modal">
+            Return to Dashboard
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================================
+       MODAL 4: STUDENT TERMINAL REPORT CARD MODAL
+       ================================================================ -->
+  <div class="modal fade" id="studentReportCardModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content bg-dark border-secondary border-opacity-25 text-light">
+        <div class="modal-header border-secondary border-opacity-25">
+          <h5 class="modal-title fw-bold">
+            <i class="bi bi-award text-teal me-2"></i> Official Terminal Student Report Card
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+
+        <div class="modal-body p-4" id="student-report-body">
+          <!-- Injected by JS -->
+        </div>
+
+        <div class="modal-footer border-secondary border-opacity-25 justify-content-between">
+          <div class="text-xs text-muted">Amule Government Secondary School Academic Registry</div>
+          <div class="d-flex gap-2">
+            <button type="button" class="btn btn-sm btn-hub-outline" onclick="window.print()">
+              <i class="bi bi-printer me-1"></i> Print Report Card
+            </button>
+            <button type="button" class="btn btn-sm btn-teal text-dark fw-bold" onclick="simulateStudentDownload('Official_Report_Card.pdf')">
+              <i class="bi bi-download me-1"></i> Download PDF
+            </button>
+            <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast notifications -->
+  <div id="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/filestore.js"></script>
+  <script src="js/profilePicture.js"></script>
+  <script src="js/sidebar.js"></script>
+  <script src="js/student.js"></script>
+</body>
+</html>
