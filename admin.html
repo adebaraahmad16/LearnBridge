@@ -13,8 +13,55 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
   <!-- LearnBridge Design System -->
   <link rel="stylesheet" href="css/styles.css">
+  <style>
+    /* ── Admin dashboard page-level overrides ── */
+    .lb-dash-bg { position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden; }
+    .lb-dash-bg::before {
+      content:'';
+      position:absolute;inset:0;
+      background:
+        radial-gradient(ellipse 65% 50% at 5% 10%, rgba(124,58,237,.16) 0%, transparent 55%),
+        radial-gradient(ellipse 55% 45% at 95% 85%, rgba(245,158,11,.1) 0%, transparent 55%),
+        radial-gradient(ellipse 40% 35% at 50% 100%, rgba(13,148,136,.08) 0%, transparent 50%);
+    }
+    .lb-orb-d {
+      position:absolute;border-radius:50%;filter:blur(90px);opacity:.13;
+      animation:orbFloatD linear infinite;
+    }
+    .lb-orb-d1{width:440px;height:440px;background:#7c3aed;top:-100px;left:-80px;animation-duration:26s;}
+    .lb-orb-d2{width:320px;height:320px;background:#f59e0b;bottom:-80px;right:-60px;animation-duration:20s;animation-delay:-9s;opacity:.08;}
+    .lb-grid-d {
+      position:absolute;inset:0;
+      background-image:radial-gradient(circle,rgba(255,255,255,.05) 1px,transparent 1px);
+      background-size:40px 40px;
+      mask-image:radial-gradient(ellipse 90% 90% at 50% 50%,black 30%,transparent 100%);
+    }
+    @keyframes orbFloatD {
+      0%,100%{transform:translate(0,0) scale(1);}
+      33%{transform:translate(28px,-20px) scale(1.05);}
+      66%{transform:translate(-20px,24px) scale(.95);}
+    }
+    /* Purple-shield accent on admin hero portal badge */
+    #section-overview .bg-primary.bg-opacity-10 {
+      background: rgba(124,58,237,.18) !important;
+      border: 1px solid rgba(124,58,237,.35) !important;
+      color: #c084fc !important;
+    }
+    /* Admin KPI card left border — amber for authority feel */
+    #section-overview .col-6 .card-hub,
+    #section-overview [class*="col-lg-2"] .card-hub {
+      border-left-color: rgba(124,58,237,.5) !important;
+    }
+  </style>
 </head>
 <body>
+
+  <!-- Animated Background -->
+  <div class="lb-dash-bg" aria-hidden="true">
+    <div class="lb-orb-d lb-orb-d1"></div>
+    <div class="lb-orb-d lb-orb-d2"></div>
+    <div class="lb-grid-d"></div>
+  </div>
 
   <!-- ================================================================
        ROUTE GUARD — Runs immediately; redirects to login if not authenticated

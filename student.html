@@ -13,8 +13,49 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
   <!-- LearnBridge Design System -->
   <link rel="stylesheet" href="css/styles.css">
+  <style>
+    /* ── Student dashboard page-level overrides ── */
+    .lb-dash-bg { position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden; }
+    .lb-dash-bg::before {
+      content:'';
+      position:absolute;inset:0;
+      background:
+        radial-gradient(ellipse 70% 55% at 5% 10%, rgba(13,148,136,.17) 0%, transparent 55%),
+        radial-gradient(ellipse 55% 45% at 95% 88%, rgba(79,70,229,.13) 0%, transparent 55%);
+    }
+    .lb-orb-d {
+      position:absolute;border-radius:50%;filter:blur(90px);opacity:.14;
+      animation:orbFloatD linear infinite;
+    }
+    .lb-orb-d1{width:400px;height:400px;background:#0d9488;top:-80px;left:-80px;animation-duration:22s;}
+    .lb-orb-d2{width:300px;height:300px;background:#4f46e5;bottom:-60px;right:-60px;animation-duration:18s;animation-delay:-6s;}
+    .lb-grid-d {
+      position:absolute;inset:0;
+      background-image:radial-gradient(circle,rgba(255,255,255,.05) 1px,transparent 1px);
+      background-size:40px 40px;
+      mask-image:radial-gradient(ellipse 90% 90% at 50% 50%,black 30%,transparent 100%);
+    }
+    @keyframes orbFloatD {
+      0%,100%{transform:translate(0,0) scale(1);}
+      33%{transform:translate(25px,-18px) scale(1.04);}
+      66%{transform:translate(-18px,22px) scale(.96);}
+    }
+    /* Teal accent on student hero portal badge */
+    #section-overview .bg-teal.bg-opacity-10 {
+      background: rgba(13,148,136,.18) !important;
+      border: 1px solid rgba(13,148,136,.35) !important;
+      color: #2dd4bf !important;
+    }
+  </style>
 </head>
 <body>
+
+  <!-- Animated Background -->
+  <div class="lb-dash-bg" aria-hidden="true">
+    <div class="lb-orb-d lb-orb-d1"></div>
+    <div class="lb-orb-d lb-orb-d2"></div>
+    <div class="lb-grid-d"></div>
+  </div>
 
   <!-- ================================================================
        ROUTE GUARD — Runs immediately; redirects to login if not authenticated
