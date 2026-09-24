@@ -13,225 +13,715 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
   <!-- LearnBridge Design System -->
   <link rel="stylesheet" href="css/styles.css">
+
+  <style>
+    /* ══════════════════════════════════════════
+       LOGIN PAGE — PREMIUM REDESIGN
+    ══════════════════════════════════════════ */
+
+    /* Animated Background Canvas */
+    .lb-login-bg {
+      position: fixed;
+      inset: 0;
+      background: #060d1f;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .lb-login-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 10% 15%, rgba(13,148,136,.22) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 90% 80%, rgba(79,70,229,.18) 0%, transparent 55%),
+        radial-gradient(ellipse 50% 40% at 50% 50%, rgba(16,185,129,.06) 0%, transparent 50%);
+      animation: bgPulse 12s ease-in-out infinite alternate;
+    }
+
+    @keyframes bgPulse {
+      from { opacity: .7; }
+      to   { opacity: 1; }
+    }
+
+    .lb-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: .18;
+      animation: orbFloat linear infinite;
+    }
+    .lb-orb-1 { width: 480px; height: 480px; background: #0d9488; top: -120px; left: -100px; animation-duration: 22s; }
+    .lb-orb-2 { width: 360px; height: 360px; background: #4f46e5; bottom: -80px; right: -80px; animation-duration: 18s; animation-delay: -8s; }
+    .lb-orb-3 { width: 260px; height: 260px; background: #10b981; top: 40%; left: 55%; animation-duration: 26s; animation-delay: -4s; }
+
+    @keyframes orbFloat {
+      0%,100% { transform: translate(0,0) scale(1); }
+      33%      { transform: translate(30px,-20px) scale(1.05); }
+      66%      { transform: translate(-20px,25px) scale(.95); }
+    }
+
+    .lb-grid {
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,.06) 1px, transparent 1px);
+      background-size: 38px 38px;
+      mask-image: radial-gradient(ellipse 85% 85% at 50% 50%, black 40%, transparent 100%);
+    }
+
+    /* Page Shell */
+    .lb-page {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+
+    /* Auth Card */
+    .lb-card {
+      width: 100%;
+      max-width: 560px;
+      background: rgba(8, 14, 35, 0.78);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 28px;
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      box-shadow: 0 0 0 1px rgba(13,148,136,.15), 0 32px 64px rgba(0,0,0,.65), inset 0 1px 0 rgba(255,255,255,.07);
+      overflow: hidden;
+      animation: cardEntrance .55s cubic-bezier(.22,.68,0,1.2) both;
+    }
+
+    @keyframes cardEntrance {
+      from { opacity: 0; transform: translateY(30px) scale(.96); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* Card Header */
+    .lb-card-header {
+      background: linear-gradient(135deg, rgba(13,148,136,.22) 0%, rgba(79,70,229,.14) 100%);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      padding: 2rem 2.25rem 1.5rem;
+      text-align: center;
+    }
+
+    .lb-logo-ring {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 64px;
+      height: 64px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #10b981, #0d9488);
+      box-shadow: 0 0 0 4px rgba(13,148,136,.22), 0 8px 24px rgba(13,148,136,.4);
+      margin-bottom: .9rem;
+      animation: logoPop .6s .2s cubic-bezier(.22,.68,0,1.4) both;
+    }
+
+    @keyframes logoPop {
+      from { transform: scale(0); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
+
+    .lb-logo-ring img { width: 48px; height: 46px; border-radius: 10px; object-fit: cover; }
+
+    .lb-brand-name {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 1.55rem;
+      letter-spacing: -.04em;
+      background: linear-gradient(135deg, #fff 30%, #2dd4bf);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: block;
+      line-height: 1.1;
+      margin-bottom: .25rem;
+    }
+
+    .lb-brand-school {
+      font-size: .72rem;
+      font-weight: 600;
+      color: rgba(255,255,255,.45);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    /* Card Body */
+    .lb-card-body { padding: 1.75rem 2.25rem 2.25rem; }
+
+    /* Role Switcher */
+    .lb-role-switcher {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: .4rem;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 16px;
+      padding: .35rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .lb-role-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .22rem;
+      padding: .65rem .5rem;
+      border-radius: 12px;
+      border: none;
+      background: transparent;
+      color: rgba(255,255,255,.4);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: .75rem;
+      cursor: pointer;
+      transition: all .22s ease;
+      letter-spacing: .02em;
+    }
+
+    .lb-role-btn i { font-size: 1.15rem; transition: transform .22s ease; }
+    .lb-role-btn:hover { color: rgba(255,255,255,.75); background: rgba(255,255,255,.06); }
+    .lb-role-btn:hover i { transform: scale(1.15); }
+
+    .lb-role-btn.active {
+      background: linear-gradient(135deg, #10b981 0%, #0d9488 100%);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(13,148,136,.4);
+    }
+
+    .lb-role-btn.active i { transform: scale(1.1); }
+
+    /* Sub-tab pills */
+    .lb-subtab-bar {
+      display: flex;
+      gap: .5rem;
+      margin-bottom: 1.4rem;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+      padding-bottom: 1rem;
+    }
+
+    .lb-subtab {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .4rem;
+      padding: .55rem 1rem;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: transparent;
+      color: rgba(255,255,255,.45);
+      font-weight: 700;
+      font-size: .82rem;
+      cursor: pointer;
+      transition: all .2s ease;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .lb-subtab:hover { background: rgba(255,255,255,.06); color: rgba(255,255,255,.75); }
+    .lb-subtab.active { background: rgba(13,148,136,.18); border-color: rgba(13,148,136,.45); color: #2dd4bf; }
+
+    /* Form Fields */
+    .lb-field { margin-bottom: 1.1rem; }
+
+    .lb-label {
+      display: block;
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.5);
+      margin-bottom: .42rem;
+    }
+
+    .lb-input-wrap { position: relative; display: flex; align-items: center; }
+
+    .lb-input-icon {
+      position: absolute;
+      left: .9rem;
+      color: rgba(255,255,255,.3);
+      font-size: .95rem;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .lb-input {
+      width: 100%;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 12px;
+      color: #f1f5f9;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: .9rem;
+      padding: .72rem 1rem .72rem 2.6rem;
+      transition: border-color .2s, box-shadow .2s, background .2s;
+      outline: none;
+      -webkit-appearance: none;
+    }
+
+    .lb-input::placeholder { color: rgba(255,255,255,.2); }
+
+    .lb-input:focus {
+      background: rgba(13,148,136,.08);
+      border-color: rgba(13,148,136,.6);
+      box-shadow: 0 0 0 3px rgba(13,148,136,.15);
+      color: #fff;
+    }
+
+    /* Select */
+    .lb-select {
+      width: 100%;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 12px;
+      color: #f1f5f9;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: .9rem;
+      padding: .72rem 2.2rem .72rem 1rem;
+      transition: border-color .2s, box-shadow .2s;
+      outline: none;
+      cursor: pointer;
+      -webkit-appearance: none;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 16 16'%3E%3Cpath fill='rgba(255,255,255,0.3)' d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right .9rem center;
+    }
+
+    .lb-select:focus { background-color: rgba(13,148,136,.08); border-color: rgba(13,148,136,.6); box-shadow: 0 0 0 3px rgba(13,148,136,.15); }
+    .lb-select option { background: #0f172a; color: #f1f5f9; }
+
+    /* Info Notice */
+    .lb-notice {
+      background: rgba(13,148,136,.08);
+      border: 1px solid rgba(13,148,136,.25);
+      border-radius: 12px;
+      padding: .75rem 1rem;
+      font-size: .8rem;
+      color: rgba(255,255,255,.55);
+      line-height: 1.5;
+      margin-bottom: .4rem;
+    }
+
+    .lb-notice i { color: #2dd4bf; }
+
+    /* Primary CTA */
+    .lb-btn-primary {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      padding: .88rem 1.5rem;
+      border-radius: 14px;
+      border: none;
+      background: linear-gradient(135deg, #10b981 0%, #0d9488 100%);
+      color: #fff;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      font-size: .95rem;
+      letter-spacing: .01em;
+      cursor: pointer;
+      transition: all .22s ease;
+      box-shadow: 0 4px 20px rgba(13,148,136,.35);
+      margin-top: .5rem;
+    }
+
+    .lb-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(13,148,136,.5); background: linear-gradient(135deg, #34d399 0%, #10b981 100%); }
+    .lb-btn-primary:active { transform: translateY(0); box-shadow: 0 4px 14px rgba(13,148,136,.3); }
+
+    /* Switch link */
+    .lb-switch-link {
+      text-align: center;
+      margin-top: 1rem;
+      font-size: .82rem;
+      color: rgba(255,255,255,.38);
+    }
+
+    .lb-switch-link a { color: #2dd4bf; font-weight: 700; text-decoration: none; transition: color .18s; }
+    .lb-switch-link a:hover { color: #10b981; }
+
+    /* Admin badge */
+    .lb-admin-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      background: rgba(79,70,229,.15);
+      border: 1px solid rgba(79,70,229,.3);
+      color: #a5b4fc;
+      font-size: .73rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      padding: .3rem .8rem;
+      border-radius: 8px;
+      margin-bottom: .9rem;
+    }
+
+    /* System setup notice */
+    .lb-setup-notice {
+      background: linear-gradient(135deg, rgba(13,148,136,.1), rgba(79,70,229,.08));
+      border: 1px solid rgba(13,148,136,.25);
+      border-radius: 14px;
+      padding: 1rem 1.1rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .lb-setup-notice .lb-setup-title {
+      font-weight: 800;
+      font-size: .85rem;
+      color: #2dd4bf;
+      margin-bottom: .3rem;
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+    }
+
+    .lb-setup-notice p { font-size: .8rem; color: rgba(255,255,255,.45); margin: 0; }
+
+    /* Class checkbox picker */
+    .lb-class-picker { display: flex; flex-wrap: wrap; gap: .45rem; padding-top: .25rem; }
+
+    .lb-class-picker label {
+      display: flex;
+      align-items: center;
+      gap: .35rem;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 8px;
+      padding: .3rem .65rem;
+      font-size: .78rem;
+      color: rgba(255,255,255,.55);
+      cursor: pointer;
+      transition: all .18s;
+      font-weight: 600;
+    }
+
+    .lb-class-picker label:hover { background: rgba(13,148,136,.12); border-color: rgba(13,148,136,.35); color: #fff; }
+    .lb-class-picker input[type="checkbox"] { accent-color: #0d9488; }
+
+    /* Section animation */
+    .lb-section { animation: sectionFade .28s ease both; }
+
+    @keyframes sectionFade {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Two-column row layout */
+    .lb-row { display: flex; gap: .75rem; }
+    .lb-row .lb-field { flex: 1; }
+
+    /* Section head */
+    .lb-section-head { margin-bottom: 1.2rem; }
+    .lb-section-head h5 { font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.08rem; color: #f8fafc; margin-bottom: .25rem; }
+    .lb-section-head p { font-size: .8rem; color: rgba(255,255,255,.4); }
+
+    /* Toast */
+    #toast-container {
+      position: fixed;
+      top: 1.25rem;
+      right: 1.25rem;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: .6rem;
+      max-width: 360px;
+      pointer-events: none;
+    }
+
+    .hub-toast {
+      display: flex;
+      align-items: flex-start;
+      gap: .75rem;
+      padding: .9rem 1.1rem;
+      border-radius: 14px;
+      background: rgba(15,23,42,.96);
+      border: 1px solid rgba(255,255,255,.1);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 8px 30px rgba(0,0,0,.5);
+      animation: toastIn .3s cubic-bezier(.22,.68,0,1.2) both;
+      font-size: .85rem;
+      color: #f1f5f9;
+      pointer-events: all;
+    }
+
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateX(30px) scale(.95); }
+      to   { opacity: 1; transform: translateX(0) scale(1); }
+    }
+
+    @keyframes toastOut {
+      from { opacity: 1; transform: translateX(0); }
+      to   { opacity: 0; transform: translateX(30px); }
+    }
+
+    .toast-icon { font-size: 1.1rem; margin-top: .1rem; flex-shrink: 0; }
+    .toast-msg { line-height: 1.45; }
+    .toast-msg strong { display: block; margin-bottom: .1rem; font-size: .88rem; }
+
+    .hub-toast.toast-success { border-color: rgba(16,185,129,.4); }
+    .hub-toast.toast-success .toast-icon { color: #10b981; }
+    .hub-toast.toast-info    { border-color: rgba(79,70,229,.4); }
+    .hub-toast.toast-info    .toast-icon { color: #818cf8; }
+    .hub-toast.toast-warning { border-color: rgba(245,158,11,.4); }
+    .hub-toast.toast-warning .toast-icon { color: #f59e0b; }
+    .hub-toast.toast-error   { border-color: rgba(239,68,68,.4); }
+    .hub-toast.toast-error   .toast-icon { color: #f87171; }
+
+    .lb-mono-teal { font-family: 'Outfit', monospace; color: #2dd4bf; font-weight: 700; }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      .lb-card-header { padding: 1.5rem 1.4rem 1.2rem; }
+      .lb-card-body   { padding: 1.25rem 1.4rem 1.75rem; }
+      .lb-brand-name  { font-size: 1.3rem; }
+      .lb-row         { flex-direction: column; gap: 0; }
+    }
+  </style>
 </head>
-<body class="auth-page-body">
+<body style="background:#060d1f;margin:0;padding:0;">
 
-  <div class="auth-container" style="max-width:580px;">
+  <!-- Animated Background -->
+  <div class="lb-login-bg" aria-hidden="true">
+    <div class="lb-orb lb-orb-1"></div>
+    <div class="lb-orb lb-orb-2"></div>
+    <div class="lb-orb lb-orb-3"></div>
+    <div class="lb-grid"></div>
+  </div>
 
-    <!-- Brand Header -->
-    <div class="text-center mb-4">
-      <div class="d-inline-flex align-items-center gap-2 mb-2">
-        <div class="brand-logo-icon" style="width:48px;height:48px;">
-          <img src="img/logo.jpeg" alt="School Logo" style="width:52px;height:48px;">
+  <!-- Page -->
+  <div class="lb-page">
+    <div class="lb-card">
+
+      <!-- Card Header -->
+      <div class="lb-card-header">
+        <div class="lb-logo-ring">
+          <img src="img/logo.jpeg" alt="School Logo">
         </div>
-        <div class="text-start">
-          <span class="brand-name fs-4">LearnBridge</span>
-          <span class="brand-sub">Government Day Secondary School, Amule</span>
-        </div>
-      </div>
-      <h4 class="fw-bold mt-2 mb-1">Welcome to LearnBridge Portal</h4>
-      <p class="text-xs" style="color:var(--text-muted);">
-        Select your portal role to sign in or create an account.
-      </p>
-    </div>
-
-    <!-- Main Auth Card -->
-    <div class="auth-card-main">
-
-      <!-- Top Primary Role Selector -->
-      <div class="auth-nav-toggle mb-4">
-        <button type="button" class="auth-toggle-btn active" id="role-btn-student" onclick="selectAuthRole('student')">
-          <i class="bi bi-mortarboard me-1"></i> Student
-        </button>
-        <button type="button" class="auth-toggle-btn" id="role-btn-staff" onclick="selectAuthRole('staff')">
-          <i class="bi bi-briefcase me-1"></i> Teacher
-        </button>
-        <button type="button" class="auth-toggle-btn" id="role-btn-admin" onclick="selectAuthRole('admin')">
-          <i class="bi bi-shield-check me-1"></i> Admin
-        </button>
+        <span class="lb-brand-name">LearnBridge</span>
+        <span class="lb-brand-school">Government Day Secondary School, Amule</span>
       </div>
 
-      <!-- ================================================================
-           SECTION 1: STUDENT AUTH (Sign In / Registration)
-           ================================================================ -->
-      <div id="role-section-student">
+      <!-- Card Body -->
+      <div class="lb-card-body">
 
-        <!-- Student Sub-Tabs -->
-        <div class="d-flex justify-content-center gap-2 mb-3 pb-2 border-bottom border-secondary border-opacity-10">
-          <button type="button" class="btn btn-sm btn-hub-primary" id="subtab-std-login" onclick="switchStudentSubTab('login')">
-            <i class="bi bi-box-arrow-in-right me-1"></i> Sign In
+        <!-- Role Switcher -->
+        <div class="lb-role-switcher" role="tablist" aria-label="Select portal role">
+          <button type="button" class="lb-role-btn active" id="role-btn-student"
+                  role="tab" aria-selected="true" onclick="selectAuthRole('student')">
+            <i class="bi bi-mortarboard-fill"></i>
+            Student
           </button>
-          <button type="button" class="btn btn-sm btn-hub-outline" id="subtab-std-register" onclick="switchStudentSubTab('register')">
-            <i class="bi bi-person-plus me-1"></i> New Registration
+          <button type="button" class="lb-role-btn" id="role-btn-staff"
+                  role="tab" aria-selected="false" onclick="selectAuthRole('staff')">
+            <i class="bi bi-briefcase-fill"></i>
+            Teacher
+          </button>
+          <button type="button" class="lb-role-btn" id="role-btn-admin"
+                  role="tab" aria-selected="false" onclick="selectAuthRole('admin')">
+            <i class="bi bi-shield-fill-check"></i>
+            Admin
           </button>
         </div>
 
-        <!-- Student Login Form -->
-        <div id="student-login-box">
-          <div class="mb-3">
-            <label class="form-label-hub">Student Admission Number *</label>
-            <div class="input-group">
-              <span class="input-group-text" style="background:var(--bg-input);border-color:var(--border-default);color:var(--text-muted);">
-                <i class="bi bi-card-heading"></i>
-              </span>
-              <input type="text" id="std-login-adm" class="form-control-hub" placeholder="e.g. GDSSA0001" required>
-            </div>
+        <!-- ════ SECTION 1: STUDENT AUTH ════ -->
+        <div id="role-section-student" class="lb-section">
+
+          <div class="lb-subtab-bar">
+            <button type="button" class="lb-subtab active" id="subtab-std-login"
+                    onclick="switchStudentSubTab('login')">
+              <i class="bi bi-box-arrow-in-right"></i> Sign In
+            </button>
+            <button type="button" class="lb-subtab" id="subtab-std-register"
+                    onclick="switchStudentSubTab('register')">
+              <i class="bi bi-person-plus"></i> New Registration
+            </button>
           </div>
 
-          <div class="mb-3">
-            <label class="form-label-hub">4-Digit Security PIN *</label>
-            <div class="input-group">
-              <span class="input-group-text" style="background:var(--bg-input);border-color:var(--border-default);color:var(--text-muted);">
-                <i class="bi bi-key"></i>
-              </span>
-              <input type="password" id="std-login-pin" class="form-control-hub" placeholder="••••" maxlength="4" required>
-            </div>
-          </div>
-
-          <button type="button" class="btn-hub-primary w-100 py-2 fs-6 mb-3" onclick="handleStudentLoginSubmit()">
-            <i class="bi bi-box-arrow-in-right me-1"></i> Sign In to Student Dashboard
-          </button>
-
-          <p class="text-center text-xs" style="color:var(--text-muted);">
-            Don't have an account?
-            <a href="#" class="text-teal text-decoration-none" onclick="switchStudentSubTab('register'); return false;">Register here</a>
-          </p>
-        </div>
-
-        <!-- Student Registration Form -->
-        <div id="student-register-box" class="d-none">
-          <form id="form-std-register" onsubmit="handleStudentRegisterSubmit(event)">
-            <div class="row g-3">
-              <div class="col-12">
-                <label class="form-label-hub">Full Name *</label>
-                <input type="text" id="reg-std-name" class="form-control-hub" placeholder="e.g. Kehinde Adeyemi" required>
-              </div>
-
-              <div class="col-md-6">
-                <label class="form-label-hub">Educational Level *</label>
-                <select id="reg-std-level" class="form-select-hub" onchange="updateRegClasses(this.value)" required>
-                  <option value="jss" selected>Junior Secondary (JSS 1–3)</option>
-                  <option value="sss">Senior Secondary (SS 1–3)</option>
-                </select>
-              </div>
-
-              <div class="col-md-6">
-                <label class="form-label-hub">Class *</label>
-                <select id="reg-std-class" class="form-select-hub" required></select>
-              </div>
-
-              <div class="col-12">
-                <div class="p-2 rounded text-xs" style="background:rgba(13,148,136,0.08);border:1px solid rgba(13,148,136,0.3);color:var(--text-muted);">
-                  <i class="bi bi-info-circle me-1 text-teal"></i>
-                  Your admission number will be generated automatically after registration
-                  (<span class="font-monospace text-teal">GDSSA0001</span>, <span class="font-monospace text-teal">GDSSA0002</span>, <span class="font-monospace text-teal">GDSSA0003</span>&hellip;).
-                  Use it to sign in afterwards.
-                </div>
-              </div>
-
-              <div class="col-md-6">
-                <label class="form-label-hub">Create 4-Digit PIN *</label>
-                <input type="password" id="reg-std-pin" class="form-control-hub" placeholder="Create a PIN" maxlength="4" required>
-              </div>
-
-              <div class="col-md-6">
-                <label class="form-label-hub">Confirm PIN *</label>
-                <input type="password" id="reg-std-cpin" class="form-control-hub" placeholder="Repeat your PIN" maxlength="4" required>
-              </div>
-
-              <div class="col-12 mt-3">
-                <button type="submit" class="btn-hub-primary w-100 py-2 fs-6">
-                  <i class="bi bi-person-check me-1"></i> Complete Registration
-                </button>
-              </div>
-
-              <div class="col-12">
-                <p class="text-center text-xs mb-0" style="color:var(--text-muted);">
-                  Already registered?
-                  <a href="#" class="text-teal text-decoration-none" onclick="switchStudentSubTab('login'); return false;">Sign in here</a>
-                </p>
+          <!-- Student Login -->
+          <div id="student-login-box">
+            <div class="lb-field">
+              <label class="lb-label" for="std-login-adm">Student Admission Number *</label>
+              <div class="lb-input-wrap">
+                <i class="bi bi-card-heading lb-input-icon"></i>
+                <input type="text" id="std-login-adm" class="lb-input"
+                       placeholder="e.g. GDSSA0001" required autocomplete="username">
               </div>
             </div>
-          </form>
-        </div>
 
-      </div>
+            <div class="lb-field">
+              <label class="lb-label" for="std-login-pin">4-Digit Security PIN *</label>
+              <div class="lb-input-wrap">
+                <i class="bi bi-key-fill lb-input-icon"></i>
+                <input type="password" id="std-login-pin" class="lb-input"
+                       placeholder="••••" maxlength="4" required autocomplete="current-password">
+              </div>
+            </div>
 
-      <!-- ================================================================
-           SECTION 2: STAFF / TEACHER AUTH (Sign In / Registration)
-           ================================================================ -->
-      <div id="role-section-staff" class="d-none">
+            <button type="button" class="lb-btn-primary" onclick="handleStudentLoginSubmit()">
+              <i class="bi bi-box-arrow-in-right"></i> Sign In to Student Dashboard
+            </button>
 
-        <!-- Staff Sub-Tabs -->
-        <div class="d-flex justify-content-center gap-2 mb-3 pb-2 border-bottom border-secondary border-opacity-10">
-          <button type="button" class="btn btn-sm btn-hub-primary" id="subtab-staff-login" onclick="switchStaffSubTab('login')">
-            <i class="bi bi-box-arrow-in-right me-1"></i> Teacher Sign In
-          </button>
-          <button type="button" class="btn btn-sm btn-hub-outline" id="subtab-staff-register" onclick="switchStaffSubTab('register')">
-            <i class="bi bi-person-plus me-1"></i> Register Account
-          </button>
-        </div>
-
-        <!-- Staff Login Form -->
-        <div id="staff-login-box">
-          <div class="mb-1 pb-2">
-            <p class="text-xs mb-0" style="color:var(--text-muted);">
-              Sign in with your Teacher ID or official email to access your dashboard.
+            <p class="lb-switch-link">
+              Don't have an account?
+              <a href="#" onclick="switchStudentSubTab('register'); return false;">Register here</a>
             </p>
           </div>
 
-          <div class="mb-3">
-            <label class="form-label-hub">Teacher ID or Email Address *</label>
-            <div class="input-group">
-              <span class="input-group-text" style="background:var(--bg-input);border-color:var(--border-default);color:var(--text-muted);">
-                <i class="bi bi-person-badge"></i>
-              </span>
-              <input type="text" id="staff-login-id" class="form-control-hub" placeholder="e.g. STAFF/MTH/02 or kabir@amule.sch.ng" required>
-            </div>
+          <!-- Student Registration -->
+          <div id="student-register-box" class="d-none">
+            <form id="form-std-register" onsubmit="handleStudentRegisterSubmit(event)">
+              <div class="lb-field">
+                <label class="lb-label" for="reg-std-name">Full Name *</label>
+                <div class="lb-input-wrap">
+                  <i class="bi bi-person lb-input-icon"></i>
+                  <input type="text" id="reg-std-name" class="lb-input"
+                         placeholder="e.g. Kehinde Adeyemi" required>
+                </div>
+              </div>
+
+              <div class="lb-row">
+                <div class="lb-field">
+                  <label class="lb-label" for="reg-std-level">Educational Level *</label>
+                  <select id="reg-std-level" class="lb-select"
+                          onchange="updateRegClasses(this.value)" required>
+                    <option value="jss" selected>Junior Secondary (JSS 1–3)</option>
+                    <option value="sss">Senior Secondary (SS 1–3)</option>
+                  </select>
+                </div>
+                <div class="lb-field">
+                  <label class="lb-label" for="reg-std-class">Class *</label>
+                  <select id="reg-std-class" class="lb-select" required></select>
+                </div>
+              </div>
+
+              <div class="lb-notice">
+                <i class="bi bi-info-circle-fill me-1"></i>
+                Your admission number is generated automatically after registration
+                (<span class="lb-mono-teal">GDSSA0001</span>, <span class="lb-mono-teal">GDSSA0002</span>&hellip;).
+                Use it to sign in afterwards.
+              </div>
+
+              <div class="lb-row" style="margin-top:.9rem;">
+                <div class="lb-field">
+                  <label class="lb-label" for="reg-std-pin">Create 4-Digit PIN *</label>
+                  <div class="lb-input-wrap">
+                    <i class="bi bi-key-fill lb-input-icon"></i>
+                    <input type="password" id="reg-std-pin" class="lb-input"
+                           placeholder="Create a PIN" maxlength="4" required>
+                  </div>
+                </div>
+                <div class="lb-field">
+                  <label class="lb-label" for="reg-std-cpin">Confirm PIN *</label>
+                  <div class="lb-input-wrap">
+                    <i class="bi bi-key lb-input-icon"></i>
+                    <input type="password" id="reg-std-cpin" class="lb-input"
+                           placeholder="Repeat your PIN" maxlength="4" required>
+                  </div>
+                </div>
+              </div>
+
+              <button type="submit" class="lb-btn-primary">
+                <i class="bi bi-person-check-fill"></i> Complete Registration
+              </button>
+
+              <p class="lb-switch-link">
+                Already registered?
+                <a href="#" onclick="switchStudentSubTab('login'); return false;">Sign in here</a>
+              </p>
+            </form>
           </div>
 
-          <div class="mb-3">
-            <label class="form-label-hub">Password *</label>
-            <div class="input-group">
-              <span class="input-group-text" style="background:var(--bg-input);border-color:var(--border-default);color:var(--text-muted);">
-                <i class="bi bi-key"></i>
-              </span>
-              <input type="password" id="staff-login-pin" class="form-control-hub" placeholder="Enter your password" required>
-            </div>
+        </div><!-- /role-section-student -->
+
+
+        <!-- ════ SECTION 2: STAFF / TEACHER AUTH ════ -->
+        <div id="role-section-staff" class="lb-section d-none">
+
+          <div class="lb-subtab-bar">
+            <button type="button" class="lb-subtab active" id="subtab-staff-login"
+                    onclick="switchStaffSubTab('login')">
+              <i class="bi bi-box-arrow-in-right"></i> Teacher Sign In
+            </button>
+            <button type="button" class="lb-subtab" id="subtab-staff-register"
+                    onclick="switchStaffSubTab('register')">
+              <i class="bi bi-person-plus"></i> Register Account
+            </button>
           </div>
 
-          <button type="button" class="btn-hub-primary w-100 py-2 fs-6 mb-3" onclick="handleStaffLoginSubmit()">
-            <i class="bi bi-box-arrow-in-right me-1"></i> Sign In
-          </button>
+          <!-- Staff Login -->
+          <div id="staff-login-box">
+            <p style="font-size:.82rem;color:rgba(255,255,255,.4);margin-bottom:1.1rem;">
+              Sign in with your Teacher ID or official email to access your dashboard.
+            </p>
 
-          <p class="text-center text-xs" style="color:var(--text-muted);">
-            No account yet?
-            <a href="#" class="text-teal text-decoration-none" onclick="switchStaffSubTab('register'); return false;">Register here</a>
-          </p>
-        </div>
+            <div class="lb-field">
+              <label class="lb-label" for="staff-login-id">Teacher ID or Email Address *</label>
+              <div class="lb-input-wrap">
+                <i class="bi bi-person-badge lb-input-icon"></i>
+                <input type="text" id="staff-login-id" class="lb-input"
+                       placeholder="e.g. STAFF/MTH/02 or kabir@amule.sch.ng" required autocomplete="username">
+              </div>
+            </div>
 
-        <!-- Staff Registration Form -->
-        <div id="staff-register-box" class="d-none">
-          <form id="form-staff-register" onsubmit="handleStaffRegisterSubmit(event)">
-            <div class="row g-3">
-              <div class="col-12">
-                <label class="form-label-hub">Full Name *</label>
-                <input type="text" id="reg-staff-name" class="form-control-hub" placeholder="e.g. Mr Zubair Kabir" required>
+            <div class="lb-field">
+              <label class="lb-label" for="staff-login-pin">Password *</label>
+              <div class="lb-input-wrap">
+                <i class="bi bi-key-fill lb-input-icon"></i>
+                <input type="password" id="staff-login-pin" class="lb-input"
+                       placeholder="Enter your password" required autocomplete="current-password">
+              </div>
+            </div>
+
+            <button type="button" class="lb-btn-primary" onclick="handleStaffLoginSubmit()">
+              <i class="bi bi-box-arrow-in-right"></i> Sign In
+            </button>
+
+            <p class="lb-switch-link">
+              No account yet?
+              <a href="#" onclick="switchStaffSubTab('register'); return false;">Register here</a>
+            </p>
+          </div>
+
+          <!-- Staff Registration -->
+          <div id="staff-register-box" class="d-none">
+            <form id="form-staff-register" onsubmit="handleStaffRegisterSubmit(event)">
+
+              <div class="lb-field">
+                <label class="lb-label" for="reg-staff-name">Full Name *</label>
+                <div class="lb-input-wrap">
+                  <i class="bi bi-person lb-input-icon"></i>
+                  <input type="text" id="reg-staff-name" class="lb-input"
+                         placeholder="e.g. Mr Zubair Kabir" required>
+                </div>
               </div>
 
-              <div class="col-md-6">
-                <label class="form-label-hub">Teacher / Staff ID *</label>
-                <input type="text" id="reg-staff-id" class="form-control-hub" placeholder="e.g. STAFF/MTH/01" required>
+              <div class="lb-row">
+                <div class="lb-field">
+                  <label class="lb-label" for="reg-staff-id">Teacher / Staff ID *</label>
+                  <div class="lb-input-wrap">
+                    <i class="bi bi-person-badge lb-input-icon"></i>
+                    <input type="text" id="reg-staff-id" class="lb-input"
+                           placeholder="e.g. STAFF/MTH/01" required>
+                  </div>
+                </div>
+                <div class="lb-field">
+                  <label class="lb-label" for="reg-staff-subject">Subject *</label>
+                  <div class="lb-input-wrap">
+                    <i class="bi bi-book lb-input-icon"></i>
+                    <input type="text" id="reg-staff-subject" class="lb-input"
+                           placeholder="e.g. Biology" required>
+                  </div>
+                </div>
               </div>
 
-              <div class="col-md-6">
-                <label class="form-label-hub">Subject *</label>
-                <input type="text" id="reg-staff-subject" class="form-control-hub" placeholder="e.g. Biology" required>
-              </div>
-
-              <div class="col-md-6">
-                <label class="form-label-hub">Department *</label>
-                <select id="reg-staff-department" class="form-select-hub" required>
+              <div class="lb-field">
+                <label class="lb-label" for="reg-staff-department">Department *</label>
+                <select id="reg-staff-department" class="lb-select" required>
                   <option value="" selected>Select your department…</option>
                   <option value="Science">Science (Senior Secondary)</option>
                   <option value="Arts">Arts (Senior Secondary)</option>
@@ -240,168 +730,191 @@
                 </select>
               </div>
 
-              <div class="col-12">
-                <label class="form-label-hub">Select Class(es) You Teach *</label>
-                <p class="text-xs mb-2" style="color:var(--text-muted);">
-                  Tick every class you teach you can select more than one. You will only see students,
-                  results and materials for the classes you choose here.
+              <div class="lb-field">
+                <label class="lb-label">Select Class(es) You Teach *</label>
+                <p style="font-size:.78rem;color:rgba(255,255,255,.38);margin-bottom:.6rem;">
+                  Tick every class you teach — you can select more than one. You will only see students, results and materials for these classes.
                 </p>
-                <div id="reg-staff-classes-picker">
+                <div id="reg-staff-classes-picker" class="lb-class-picker">
                   <!-- Class checkboxes injected by js/access.js -->
                 </div>
               </div>
 
-              <div class="col-md-6">
-                <label class="form-label-hub">Select Class You Are Class Teacher For</label>
-                <select id="reg-staff-class-teacher" class="form-select-hub">
+              <div class="lb-field">
+                <label class="lb-label" for="reg-staff-class-teacher">Select Class You Are Class Teacher For</label>
+                <select id="reg-staff-class-teacher" class="lb-select">
                   <option value="" selected>Not a Class Teacher</option>
                 </select>
-                <div class="text-xs text-muted mt-1">
-                  Optional. The Class Teacher monitors one designated class and can upload results for
-                  its students even if the class is not among their teaching subjects. This is separate
-                  from the classes you teach above.
+                <p style="font-size:.76rem;color:rgba(255,255,255,.3);margin-top:.4rem;line-height:1.45;">
+                  Optional. The Class Teacher monitors one designated class and can upload results for its students even if the class is not among their teaching subjects.
+                </p>
+              </div>
+
+              <div class="lb-row">
+                <div class="lb-field">
+                  <label class="lb-label" for="reg-staff-email">Email Address *</label>
+                  <div class="lb-input-wrap">
+                    <i class="bi bi-envelope lb-input-icon"></i>
+                    <input type="email" id="reg-staff-email" class="lb-input"
+                           placeholder="okafor@amule.sch.ng" required autocomplete="email">
+                  </div>
+                </div>
+                <div class="lb-field">
+                  <label class="lb-label" for="reg-staff-phone">Phone Number *</label>
+                  <div class="lb-input-wrap">
+                    <i class="bi bi-telephone lb-input-icon"></i>
+                    <input type="tel" id="reg-staff-phone" class="lb-input"
+                           placeholder="e.g. 08012345678" required>
+                  </div>
                 </div>
               </div>
 
-              <div class="col-md-6">
-                <label class="form-label-hub">Email Address *</label>
-                <input type="email" id="reg-staff-email" class="form-control-hub" placeholder="okafor@amule.sch.ng" required>
+              <div class="lb-row">
+                <div class="lb-field">
+                  <label class="lb-label" for="reg-staff-pin">Password *</label>
+                  <div class="lb-input-wrap">
+                    <i class="bi bi-key-fill lb-input-icon"></i>
+                    <input type="password" id="reg-staff-pin" class="lb-input"
+                           placeholder="Create a password" required autocomplete="new-password">
+                  </div>
+                </div>
+                <div class="lb-field">
+                  <label class="lb-label" for="reg-staff-cpin">Confirm Password *</label>
+                  <div class="lb-input-wrap">
+                    <i class="bi bi-key lb-input-icon"></i>
+                    <input type="password" id="reg-staff-cpin" class="lb-input"
+                           placeholder="Repeat your password" required autocomplete="new-password">
+                  </div>
+                </div>
               </div>
 
-              <div class="col-md-6">
-                <label class="form-label-hub">Phone Number *</label>
-                <input type="tel" id="reg-staff-phone" class="form-control-hub" placeholder="e.g. 08012345678" required>
-              </div>
+              <button type="submit" class="lb-btn-primary">
+                <i class="bi bi-person-check-fill"></i> Create Account
+              </button>
 
-              <div class="col-md-6">
-                <label class="form-label-hub">Password *</label>
-                <input type="password" id="reg-staff-pin" class="form-control-hub" placeholder="Create a password" required>
-              </div>
+              <p class="lb-switch-link">
+                Already registered?
+                <a href="#" onclick="switchStaffSubTab('login'); return false;">Sign in here</a>
+              </p>
+            </form>
+          </div>
 
-              <div class="col-md-6">
-                <label class="form-label-hub">Confirm Password *</label>
-                <input type="password" id="reg-staff-cpin" class="form-control-hub" placeholder="Repeat your password" required>
-              </div>
+        </div><!-- /role-section-staff -->
 
-              <div class="col-12 mt-3">
-                <button type="submit" class="btn-hub-primary w-100 py-2 fs-6">
-                  <i class="bi bi-person-check me-1"></i> Create Account
-                </button>
-              </div>
 
-              <div class="col-12">
-                <p class="text-center text-xs mb-0" style="color:var(--text-muted);">
-                  Already registered?
-                  <a href="#" class="text-teal text-decoration-none" onclick="switchStaffSubTab('login'); return false;">Sign in here</a>
-                </p>
-              </div>
-            </div>
-          </form>
-        </div>
+        <!-- ════ SECTION 3: ADMIN / PRINCIPAL AUTH ════ -->
+        <div id="role-section-admin" class="lb-section d-none">
 
-      </div>
-
-      <!-- ================================================================
-           SECTION 3: SCHOOL ADMINISTRATOR & PRINCIPAL AUTH
-           ================================================================ -->
-      <div id="role-section-admin" class="d-none">
-
-        <div class="mb-3">
-          <div class="d-inline-flex align-items-center gap-1 px-2 py-1 rounded bg-primary bg-opacity-10 text-primary text-xs fw-bold mb-2">
+          <div class="lb-admin-badge">
             <i class="bi bi-shield-lock-fill"></i> Principal &amp; School Administration
           </div>
-          <h5 class="fw-bold mb-1">Administrative Control Portal</h5>
-          <p class="text-xs" style="color:var(--text-muted);">
-            Master administrative management: upload broadsheet results, approve materials, manage curriculum, staff &amp; student directories.
-          </p>
-        </div>
 
-        <!-- Admin accounts are created by the school administration, not by public registration.
-             The very first administrator is set up through the one-time bootstrap below. -->
-
-        <!-- Admin Login Form (shown once at least one administrator exists) -->
-        <div id="admin-login-box" class="d-none">
-          <div class="mb-3">
-            <label class="form-label-hub">Admin ID or Official Email *</label>
-            <div class="input-group">
-              <span class="input-group-text" style="background:var(--bg-input);border-color:var(--border-default);color:var(--text-muted);">
-                <i class="bi bi-shield-lock"></i>
-              </span>
-              <input type="text" id="admin-login-id" class="form-control-hub" placeholder="e.g. STAFF/ADM/01 or admin@amule.sch.ng" required>
-            </div>
+          <div class="lb-section-head">
+            <h5>Administrative Control Portal</h5>
+            <p>Master administrative management: upload broadsheet results, approve materials, manage curriculum, staff &amp; student directories.</p>
           </div>
 
-          <div class="mb-3">
-            <label class="form-label-hub">Admin Password *</label>
-            <div class="input-group">
-              <span class="input-group-text" style="background:var(--bg-input);border-color:var(--border-default);color:var(--text-muted);">
-                <i class="bi bi-key"></i>
-              </span>
-              <input type="password" id="admin-login-pin" class="form-control-hub" placeholder="Enter your password" required>
+          <!-- Admin Login -->
+          <div id="admin-login-box" class="d-none">
+            <div class="lb-field">
+              <label class="lb-label" for="admin-login-id">Admin ID or Official Email *</label>
+              <div class="lb-input-wrap">
+                <i class="bi bi-shield-lock lb-input-icon"></i>
+                <input type="text" id="admin-login-id" class="lb-input"
+                       placeholder="e.g. STAFF/ADM/01 or admin@amule.sch.ng" required autocomplete="username">
+              </div>
             </div>
-          </div>
 
-          <button type="button" class="btn-hub-primary w-100 py-2 fs-6 mb-3" onclick="handleAdminLoginSubmit()">
-            <i class="bi bi-shield-check me-1"></i> Sign In to Administrator Portal
-          </button>
-
-          <p class="text-center text-xs mb-0" style="color:var(--text-muted);">
-            Additional administrator accounts are created by the school administration from the Admin Dashboard.
-          </p>
-        </div>
-
-        <!-- One-Time Administrator Bootstrap (only visible before the first admin is created) -->
-        <div id="admin-bootstrap-box" class="d-none">
-          <div class="mb-3 p-3 rounded" style="background:rgba(13, 148, 136, 0.08);border:1px solid rgba(13, 148, 136, 0.3);">
-            <div class="fw-bold text-sm text-white mb-1">
-              <i class="bi bi-gear-fill text-teal me-1"></i> One-Time System Setup
+            <div class="lb-field">
+              <label class="lb-label" for="admin-login-pin">Admin Password *</label>
+              <div class="lb-input-wrap">
+                <i class="bi bi-key-fill lb-input-icon"></i>
+                <input type="password" id="admin-login-pin" class="lb-input"
+                       placeholder="Enter your password" required autocomplete="current-password">
+              </div>
             </div>
-            <p class="text-xs mb-0" style="color:var(--text-muted);">
-              No administrator account exists yet. This secure setup creates the first School Administrator for this deployment.
-              After setup, administrator accounts are created only by existing administrators.
+
+            <button type="button" class="lb-btn-primary" onclick="handleAdminLoginSubmit()">
+              <i class="bi bi-shield-check"></i> Sign In to Administrator Portal
+            </button>
+
+            <p class="lb-switch-link" style="margin-top:.9rem;">
+              Additional administrator accounts are created by the school administration from the Admin Dashboard.
             </p>
           </div>
-          <form id="form-admin-bootstrap" onsubmit="handleAdminBootstrapSubmit(event)">
-            <div class="row g-3">
-              <div class="col-12">
-                <label class="form-label-hub">Full Name *</label>
-                <input type="text" id="boot-admin-name" class="form-control-hub" placeholder="e.g. Dr. Ngozi Okonkwo" required>
-              </div>
 
-              <div class="col-md-6">
-                <label class="form-label-hub">Admin ID *</label>
-                <input type="text" id="boot-admin-id" class="form-control-hub" placeholder="e.g. STAFF/ADM/01" required>
+          <!-- One-Time Bootstrap -->
+          <div id="admin-bootstrap-box" class="d-none">
+            <div class="lb-setup-notice">
+              <div class="lb-setup-title">
+                <i class="bi bi-gear-fill"></i> One-Time System Setup
               </div>
-
-              <div class="col-md-6">
-                <label class="form-label-hub">Official Email *</label>
-                <input type="email" id="boot-admin-email" class="form-control-hub" placeholder="principal@amule.sch.ng" required>
-              </div>
-
-              <div class="col-md-6">
-                <label class="form-label-hub">Password *</label>
-                <input type="password" id="boot-admin-pin" class="form-control-hub" placeholder="Create a password" required>
-              </div>
-
-              <div class="col-md-6">
-                <label class="form-label-hub">Confirm Password *</label>
-                <input type="password" id="boot-admin-cpin" class="form-control-hub" placeholder="Repeat your password" required>
-              </div>
-
-              <div class="col-12 mt-3">
-                <button type="submit" class="btn-hub-primary w-100 py-2 fs-6">
-                  <i class="bi bi-shield-lock me-1"></i> Initialize School Administrator
-                </button>
-              </div>
+              <p>
+                No administrator account exists yet. This secure setup creates the first School Administrator for this deployment.
+                After setup, administrator accounts are created only by existing administrators.
+              </p>
             </div>
-          </form>
-        </div>
 
-      </div>
+            <form id="form-admin-bootstrap" onsubmit="handleAdminBootstrapSubmit(event)">
 
-    </div>
+              <div class="lb-field">
+                <label class="lb-label" for="boot-admin-name">Full Name *</label>
+                <div class="lb-input-wrap">
+                  <i class="bi bi-person lb-input-icon"></i>
+                  <input type="text" id="boot-admin-name" class="lb-input"
+                         placeholder="e.g. Dr. Ngozi Okonkwo" required>
+                </div>
+              </div>
 
-  </div>
+              <div class="lb-row">
+                <div class="lb-field">
+                  <label class="lb-label" for="boot-admin-id">Admin ID *</label>
+                  <div class="lb-input-wrap">
+                    <i class="bi bi-person-badge lb-input-icon"></i>
+                    <input type="text" id="boot-admin-id" class="lb-input"
+                           placeholder="e.g. STAFF/ADM/01" required>
+                  </div>
+                </div>
+                <div class="lb-field">
+                  <label class="lb-label" for="boot-admin-email">Official Email *</label>
+                  <div class="lb-input-wrap">
+                    <i class="bi bi-envelope lb-input-icon"></i>
+                    <input type="email" id="boot-admin-email" class="lb-input"
+                           placeholder="principal@amule.sch.ng" required autocomplete="email">
+                  </div>
+                </div>
+              </div>
+
+              <div class="lb-row">
+                <div class="lb-field">
+                  <label class="lb-label" for="boot-admin-pin">Password *</label>
+                  <div class="lb-input-wrap">
+                    <i class="bi bi-key-fill lb-input-icon"></i>
+                    <input type="password" id="boot-admin-pin" class="lb-input"
+                           placeholder="Create a password" required autocomplete="new-password">
+                  </div>
+                </div>
+                <div class="lb-field">
+                  <label class="lb-label" for="boot-admin-cpin">Confirm Password *</label>
+                  <div class="lb-input-wrap">
+                    <i class="bi bi-key lb-input-icon"></i>
+                    <input type="password" id="boot-admin-cpin" class="lb-input"
+                           placeholder="Repeat your password" required autocomplete="new-password">
+                  </div>
+                </div>
+              </div>
+
+              <button type="submit" class="lb-btn-primary">
+                <i class="bi bi-shield-lock"></i> Initialize School Administrator
+              </button>
+            </form>
+          </div>
+
+        </div><!-- /role-section-admin -->
+
+      </div><!-- /.lb-card-body -->
+    </div><!-- /.lb-card -->
+  </div><!-- /.lb-page -->
 
   <!-- Toast notifications -->
   <div id="toast-container"></div>
@@ -458,16 +971,25 @@
     // ─── Role Tab Switching ──────────────────────────────────────────────────
     function selectAuthRole(role) {
       ['student','staff','admin'].forEach(r => {
-        document.getElementById(`role-btn-${r}`).classList.toggle('active', r === role);
-        document.getElementById(`role-section-${r}`).classList.toggle('d-none', r !== role);
+        const btn = document.getElementById(`role-btn-${r}`);
+        const sec = document.getElementById(`role-section-${r}`);
+        const isActive = r === role;
+        btn.classList.toggle('active', isActive);
+        btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        sec.classList.toggle('d-none', !isActive);
+        if (isActive) {
+          sec.classList.remove('lb-section');
+          void sec.offsetWidth;
+          sec.classList.add('lb-section');
+        }
       });
     }
 
     // ─── Student Sub-Tabs ────────────────────────────────────────────────────
     function switchStudentSubTab(tab) {
       const isLogin = tab === 'login';
-      document.getElementById('subtab-std-login').className    = isLogin ? 'btn btn-sm btn-hub-primary' : 'btn btn-sm btn-hub-outline';
-      document.getElementById('subtab-std-register').className = !isLogin ? 'btn btn-sm btn-hub-primary' : 'btn btn-sm btn-hub-outline';
+      document.getElementById('subtab-std-login').className    = isLogin ? 'lb-subtab active' : 'lb-subtab';
+      document.getElementById('subtab-std-register').className = !isLogin ? 'lb-subtab active' : 'lb-subtab';
       document.getElementById('student-login-box').classList.toggle('d-none', !isLogin);
       document.getElementById('student-register-box').classList.toggle('d-none', isLogin);
     }
@@ -475,8 +997,8 @@
     // ─── Staff Sub-Tabs ──────────────────────────────────────────────────────
     function switchStaffSubTab(tab) {
       const isLogin = tab === 'login';
-      document.getElementById('subtab-staff-login').className    = isLogin ? 'btn btn-sm btn-hub-primary' : 'btn btn-sm btn-hub-outline';
-      document.getElementById('subtab-staff-register').className = !isLogin ? 'btn btn-sm btn-hub-primary' : 'btn btn-sm btn-hub-outline';
+      document.getElementById('subtab-staff-login').className    = isLogin ? 'lb-subtab active' : 'lb-subtab';
+      document.getElementById('subtab-staff-register').className = !isLogin ? 'lb-subtab active' : 'lb-subtab';
       document.getElementById('staff-login-box').classList.toggle('d-none', !isLogin);
       document.getElementById('staff-register-box').classList.toggle('d-none', isLogin);
     }
