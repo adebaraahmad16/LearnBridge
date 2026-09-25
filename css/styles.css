@@ -588,7 +588,8 @@ a { text-decoration: none; }
   width: 100%;
 }
 
-.table-hub thead th { color: var(--text-primary) !important; }
+.table-hub thead th {
+  color: var(--text-primary) !important;
   background: rgba(15, 23, 42, 0.85);
   color: var(--text-muted);
   font-weight: 700;
@@ -691,16 +692,6 @@ a { text-decoration: none; }
 
 .hub-toast .toast-msg { font-size: 0.875rem; line-height: 1.45; color: var(--text-secondary); }
 .hub-toast .toast-msg strong { color: var(--text-primary); display: block; margin-bottom: 0.15rem; }
-
-@keyframes toastIn {
-  from { opacity: 0; transform: translateX(20px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-
-@keyframes toastOut {
-  from { opacity: 1; transform: translateX(0); }
-  to   { opacity: 0; transform: translateX(20px); }
-}
 
 /* ----------------------------------------
    13. METRIC STAT CARDS (Admin/Teacher)
@@ -1624,7 +1615,7 @@ body.low-data-mode .card-hub {
   background: rgba(14, 22, 40, 0.98) !important;
 }
 
-body.low-data-mode body {
+body.low-data-mode {
   background-image: none !important;
 }
 
