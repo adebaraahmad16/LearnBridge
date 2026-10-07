@@ -52,6 +52,42 @@
     #section-overview [class*="col-lg-2"] .card-hub {
       border-left-color: rgba(124,58,237,.5) !important;
     }
+
+    /* ── Modal scroll fixes ── */
+    #adminUploadMaterialModal .modal-dialog {
+      max-height: 90vh;
+    }
+    #adminUploadMaterialModal .modal-body {
+      overflow-y: auto;
+      max-height: calc(80vh - 130px);
+      overscroll-behavior: contain;
+    }
+    #adminUploadMaterialModal .modal-body::-webkit-scrollbar {
+      width: 7px;
+    }
+    #adminUploadMaterialModal .modal-body::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.6);
+      border-radius: 10px;
+    }
+    #adminUploadMaterialModal .modal-body::-webkit-scrollbar-thumb {
+      background: rgba(13, 148, 136, 0.55);
+      border-radius: 10px;
+      border: 2px solid rgba(15, 23, 42, 0.4);
+    }
+    #adminUploadMaterialModal .modal-body::-webkit-scrollbar-thumb:hover {
+      background: rgba(13, 148, 136, 0.85);
+    }
+    .modal-scroll-hint {
+      position: sticky;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 32px;
+      background: linear-gradient(to bottom, transparent, rgba(15,23,42,0.75));
+      pointer-events: none;
+      z-index: 1;
+      margin-top: -32px;
+    }
   </style>
 </head>
 <body>
@@ -740,8 +776,8 @@
           </h5>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
         </div>
-        <form id="form-admin-upload-material" onsubmit="handleAdminMaterialUploadSubmit(event)">
-          <div class="modal-body p-4">
+        <form id="form-admin-upload-material" onsubmit="handleAdminMaterialUploadSubmit(event)" style="display:flex;flex-direction:column;overflow:hidden;flex:1 1 auto;min-height:0;">
+          <div class="modal-body p-4" style="overflow-y:auto;flex:1 1 auto;min-height:0;">
             <div class="row g-3">
               <div class="col-12">
                 <label class="form-label-hub">Material Title *</label>
@@ -885,6 +921,7 @@
                 <textarea id="admin-upload-content" class="form-control-hub font-monospace text-xs" rows="4" placeholder="Optional supporting notes, formulas or instructions displayed alongside the material&hellip;"></textarea>
               </div>
             </div>
+            <div class="modal-scroll-hint" aria-hidden="true"></div>
           </div>
           <div class="modal-footer border-secondary border-opacity-25 d-flex flex-wrap justify-content-between gap-2">
             <span class="text-xs text-muted" id="admin-upload-submit-hint">

@@ -46,6 +46,55 @@
       border: 1px solid rgba(99,102,241,.35) !important;
       color: #a5b4fc !important;
     }
+
+    /* ── Modal scroll fixes ── */
+    /* Ensure the modal dialog doesn't exceed viewport height */
+    #uploadResourceModal .modal-dialog,
+    #staffUploadResultModal .modal-dialog {
+      max-height: 90vh;
+    }
+
+    /* Make the modal body scrollable with a visible styled scrollbar */
+    #uploadResourceModal .modal-body,
+    #staffUploadResultModal .modal-body {
+      overflow-y: auto;
+      max-height: calc(80vh - 130px); /* subtract header + footer heights */
+      overscroll-behavior: contain;
+    }
+
+    /* Custom scrollbar — webkit */
+    #uploadResourceModal .modal-body::-webkit-scrollbar,
+    #staffUploadResultModal .modal-body::-webkit-scrollbar {
+      width: 7px;
+    }
+    #uploadResourceModal .modal-body::-webkit-scrollbar-track,
+    #staffUploadResultModal .modal-body::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.6);
+      border-radius: 10px;
+    }
+    #uploadResourceModal .modal-body::-webkit-scrollbar-thumb,
+    #staffUploadResultModal .modal-body::-webkit-scrollbar-thumb {
+      background: rgba(13, 148, 136, 0.55);
+      border-radius: 10px;
+      border: 2px solid rgba(15, 23, 42, 0.4);
+    }
+    #uploadResourceModal .modal-body::-webkit-scrollbar-thumb:hover,
+    #staffUploadResultModal .modal-body::-webkit-scrollbar-thumb:hover {
+      background: rgba(13, 148, 136, 0.85);
+    }
+
+    /* Scroll indicator hint — subtle fade at the bottom of the modal body */
+    .modal-scroll-hint {
+      position: sticky;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 32px;
+      background: linear-gradient(to bottom, transparent, rgba(15,23,42,0.75));
+      pointer-events: none;
+      z-index: 1;
+      margin-top: -32px;
+    }
   </style>
 </head>
 <body>
@@ -426,9 +475,9 @@
           </h5>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
         </div>
-        <form id="form-upload-resource" onsubmit="handleResourceUploadSubmit(event)">
+        <form id="form-upload-resource" onsubmit="handleResourceUploadSubmit(event)" style="display:flex;flex-direction:column;overflow:hidden;flex:1 1 auto;min-height:0;">
           <input type="hidden" id="upload-edit-id" value="">
-          <div class="modal-body p-4">
+          <div class="modal-body p-4" style="overflow-y:auto;flex:1 1 auto;min-height:0;">
             <div class="row g-3">
               <div class="col-12">
                 <label class="form-label-hub">Material Title *</label>
@@ -573,6 +622,7 @@
                 <textarea id="upload-content" class="form-control-hub font-monospace text-xs" rows="4" placeholder="Optional supporting notes, formulas or instructions displayed alongside the material&hellip;"></textarea>
               </div>
             </div>
+            <div class="modal-scroll-hint" aria-hidden="true"></div>
           </div>
           <div class="modal-footer border-secondary border-opacity-25 d-flex flex-wrap justify-content-between gap-2">
             <span class="text-xs text-muted" id="upload-submit-hint">
@@ -614,7 +664,7 @@
        MODAL 2: UPLOAD RESULTS DOCUMENT FROM STAFF PORTAL
        ================================================================ -->
   <div class="modal fade" id="staffUploadResultModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
       <div class="modal-content bg-dark border-secondary border-opacity-25 text-light">
         <div class="modal-header border-secondary border-opacity-25">
           <h5 class="modal-title fw-bold">
@@ -622,8 +672,8 @@
           </h5>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
         </div>
-        <form id="form-staff-upload-result" onsubmit="handleStaffResultUploadSubmit(event)">
-          <div class="modal-body p-4">
+        <form id="form-staff-upload-result" onsubmit="handleStaffResultUploadSubmit(event)" style="display:flex;flex-direction:column;overflow:hidden;flex:1 1 auto;min-height:0;">
+          <div class="modal-body p-4" style="overflow-y:auto;flex:1 1 auto;min-height:0;">
             <div class="row g-3">
               <div class="col-12">
                 <label class="form-label-hub">Result Document Title *</label>
