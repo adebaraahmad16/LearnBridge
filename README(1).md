@@ -2,7 +2,7 @@
 
 ## Amule Government Secondary School
 
-LearnBridge is Amule Government Secondary School's digital learning platform designed to give students free access to approved, curriculum-relevant educational resources. Rather than functioning as a simple collection of PDFs and videos, it combines a digital resource library with learning activities, quizzes, assignments, progress tracking, and school-level management.
+LearnBridge is Amule Government Secondary School's digital learning platform designed to give students free access to approved, curriculum-relevant educational resources. Rather than functioning as a simple collection of PDFs and videos, it combines a digital resource library with learning activities, quizzes, progress tracking, and school-level management.
 
 The goal is to give every student access to quality learning support regardless of whether they can afford private tutoring or additional learning materials.
 
@@ -30,7 +30,7 @@ LearnBridge gives students access to a common, organized, and school-approved co
 - Allow schools to control and approve learning materials.
 - Give teachers tools to upload resources for their classes.
 - Organize resources by class, subject, topic, and resource type.
-- Support learning through notes, videos, worksheets, quizzes, and assignments.
+- Support learning through notes, videos, worksheets, and quizzes.
 - Track student learning progress.
 - Help teachers identify students who need additional support.
 - Provide school administrators with learning analytics.
@@ -87,7 +87,6 @@ Teachers can provide additional learning resources for their students.
 
 - View assigned classes
 - Upload learning resources
-- Create assignments
 - Create quizzes
 - View student progress
 - Monitor resource usage
@@ -132,7 +131,6 @@ Possible sections include:
 - My Subjects
 - Recommended Resources
 - Recent Resources
-- Assignments
 - Quizzes
 - My Progress
 - Exam Preparation
@@ -160,7 +158,6 @@ Parents can view:
 
 - Child's learning activity
 - Resources accessed
-- Assignments completed
 - Quizzes taken
 - Quiz scores
 - Learning progress
@@ -402,7 +399,6 @@ The system should track:
 - Videos watched
 - Quizzes attempted
 - Quiz scores
-- Assignments completed
 - Learning time
 - Topics mastered
 
@@ -447,7 +443,6 @@ Students can earn **Learning Points** for:
 - Completing lessons
 - Passing quizzes
 - Reading resources
-- Completing assignments
 - Maintaining learning streaks
 
 ### Example
@@ -498,7 +493,6 @@ This can help schools identify topics where students are struggling and encourag
 - Learning Library
 - Recommended
 - My Progress
-- Assignments
 - Quizzes
 - Exam Preparation
 - Achievements
@@ -509,7 +503,6 @@ This can help schools identify topics where students are struggling and encourag
 - My Classes
 - My Resources
 - Upload Resource
-- Assignments
 - Quizzes
 - Student Progress
 - Resource Analytics
@@ -532,7 +525,6 @@ This can help schools identify topics where students are struggling and encourag
 - Dashboard
 - Child's Progress
 - Learning Activity
-- Assignments
 - Results
 
 ---
@@ -598,7 +590,7 @@ For the first version, focus on these eight core features:
 4. Classes and subjects
 5. Digital resource library
 6. Teacher resource upload and admin approval
-7. Quizzes and assignments
+7. Quizzes and practice assessments
 8. Student progress dashboard
 
 ### Phase 2 Features

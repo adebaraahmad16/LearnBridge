@@ -124,7 +124,6 @@ function initStudentDashboard() {
   renderStudentResultDocs();
   renderAchievements();
   renderRecentActivity();
-  renderStudentAssignments();
   renderStudentAnnouncementsSection();
   renderStudentProfileSection();
 }
@@ -1301,55 +1300,9 @@ function showToast(type = 'info', title = '', message = '', durationMs = 3500) {
 }
 
 /**
- * 10. Sidebar Sections — Assignments, Announcements & Profile
- * Assignments: approved class/department-scoped resources flagged as
- * assignments. Announcements: the Principal's school-wide notice.
+ * 10. Sidebar Sections — Announcements & Profile
+ * Announcements: the Principal's school-wide notice.
  */
-function renderStudentAssignments() {
-  const container = document.getElementById('student-assignments-list');
-  if (!container || !currentStudent) return;
-
-  const assignments = (appState.resources || []).filter(r => {
-    if (r.status !== 'published' || r.approved === false) return false;
-    if (!r.isAssignment) return false;
-    // Same class + department scope every other student view uses.
-    return resourceMatchesStudentClass(r);
-  });
-
-  if (assignments.length === 0) {
-    container.innerHTML = `
-      <div class="text-center py-4">
-        <i class="bi bi-journal-check fs-1 text-muted d-block mb-2"></i>
-        <p class="text-sm text-muted mb-1">No assignments yet.</p>
-        <p class="text-xs text-muted mb-0">Take-home tasks and worksheets for your class will appear here once your teachers publish them.</p>
-      </div>
-    `;
-    return;
-  }
-
-  container.innerHTML = assignments.map(a => {
-    const meta = getMaterialTypeInfo(a);
-    return `
-      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 p-3 mb-2 rounded" style="background:rgba(15,23,42,0.55);border:1px solid rgba(148,163,184,0.16);">
-        <div>
-          <div class="fw-bold text-sm text-white">${escapeHtml(a.title || 'Untitled assignment')}</div>
-          <div class="text-xs text-muted mt-1">
-            <span class="badge ${meta.color} me-1">${meta.label}</span>
-            ${a.subject ? `<span class="me-2"><i class="bi bi-book me-1"></i>${escapeHtml(a.subject)}</span>` : ''}
-            ${a.class ? `<span class="me-2"><i class="bi bi-people me-1"></i>${escapeHtml(a.class)}</span>` : ''}
-            ${a.uploadedBy ? `<span><i class="bi bi-person me-1"></i>${escapeHtml(a.uploadedBy)}</span>` : ''}
-          </div>
-          ${a.description ? `<div class="text-xs text-muted mt-1">${escapeHtml(String(a.description).substring(0, 140))}</div>` : ''}
-        </div>
-        <div class="text-md-end">
-          <button class="btn btn-sm btn-teal text-dark fw-bold" onclick="openResourceViewer('${a.id}')">
-            <i class="bi ${meta.actionIcon} me-1"></i> ${meta.actionLabel}
-          </button>
-        </div>
-      </div>
-    `;
-  }).join('');
-}
 
 function renderStudentAnnouncementsSection() {
   const container = document.getElementById('student-announcements-list');

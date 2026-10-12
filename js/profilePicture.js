@@ -19,6 +19,10 @@
 
 const ProfilePicture = (() => {
 
+  function escapeText(value) {
+    return String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+  }
+
   /** Initials from a name — used while no picture has been uploaded. */
   function getInitials(name) {
     const clean = (name || '').trim();
@@ -29,8 +33,8 @@ const ProfilePicture = (() => {
       .split(/\s+/)
       .filter(Boolean);
     if (words.length === 0) return '?';
-    if (words.length === 1) return words[0].substring(0, 2).toUpperCase();
-    return (words[0][0] + words[words.length - 1][0]).toUpperCase();
+    if (words.length === 1) return escapeText(words[0].substring(0, 2).toUpperCase());
+    return escapeText((words[0][0] + words[words.length - 1][0]).toUpperCase());
   }
 
   /**
@@ -150,8 +154,8 @@ const ProfilePicture = (() => {
         </div>
         ${opts.sublabel !== undefined ? `
         <div class="pp-id-text">
-          <div class="pp-id-name">${opts.name || 'User'}</div>
-          <div class="pp-id-sub">${opts.sublabel}</div>
+          <div class="pp-id-name">${escapeText(opts.name || 'User')}</div>
+          <div class="pp-id-sub">${escapeText(opts.sublabel)}</div>
         </div>` : ''}
         <div class="pp-actions">
           ${has
@@ -365,8 +369,8 @@ const ProfilePicture = (() => {
     el.innerHTML = `
       <div class="pp-nav-initials" ${badgeId ? `id="${badgeId}"` : ''} data-pp-account-id="${accountId || ''}"><span>${getInitials(name)}</span></div>
       <div class="sidebar-id-text">
-        <div class="sidebar-id-name">${name || 'User'}</div>
-        <div class="sidebar-id-sub">${sublabel || ''}</div>
+        <div class="sidebar-id-name">${escapeText(name || 'User')}</div>
+        <div class="sidebar-id-sub">${escapeText(sublabel || '')}</div>
       </div>
     `;
     const badge = el.querySelector('.pp-nav-initials');

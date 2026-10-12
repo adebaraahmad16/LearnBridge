@@ -713,8 +713,9 @@
                   <label class="lb-label" for="reg-staff-subject">Subject *</label>
                   <div class="lb-input-wrap">
                     <i class="bi bi-book lb-input-icon"></i>
-                    <input type="text" id="reg-staff-subject" class="lb-input"
-                           placeholder="e.g. Biology" required>
+                    <select id="reg-staff-subject" class="lb-select" required>
+                      <option value="">Select your subject…</option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -952,6 +953,9 @@
       else selectAuthRole('student');
 
       updateRegClasses('jss');
+      const subjectSelect = document.getElementById('reg-staff-subject');
+      const subjectNames = [...new Set(Object.values(appState.levelSubjects || INITIAL_DATA.levelSubjects).flat().map(subject => subject.name))].sort();
+      subjectNames.forEach(name => subjectSelect.add(new Option(name, name)));
       Access.renderClassPicker('reg-staff-classes-picker', []);
       updateStaffClassTeacherOptions();
 

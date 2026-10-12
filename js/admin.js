@@ -1,7 +1,7 @@
 /**
  * LearnBridge — Master School Administrator & Principal Portal Logic
  * Controls examination result broadsheets, document uploads, curriculum authorizations,
- * student rosters, staff assignments, and institutional settings.
+ * student rosters, staff teaching allocations, and institutional settings.
  */
 
 // Enforce Administrator Route Protection
@@ -605,10 +605,10 @@ function renderAdminStudents() {
       <td>
         <div class="d-flex align-items-center gap-2">
           ${studentBadgeHtml(s)}
-          <span class="fw-bold text-white text-sm">${s.name}</span>
+          <span class="fw-bold text-white text-sm">${escapeHtmlAdmin(s.name)}</span>
         </div>
       </td>
-      <td><span class="font-monospace text-xs text-teal">${s.admissionNo || 'N/A'}</span></td>
+      <td><span class="font-monospace text-xs text-teal">${escapeHtmlAdmin(s.admissionNo || 'N/A')}</span></td>
       <td><span class="badge bg-secondary bg-opacity-25 text-light text-xs">${s.class || 'Secondary'}</span></td>
       <td><span class="text-xs text-muted font-monospace">${s.passcode ? '••••' : '—'}</span></td>
       <td><span class="text-xs text-warning font-monospace">${s.streakDays || 1} Days</span></td>
@@ -696,8 +696,8 @@ function openStudentReportCard(studentId) {
         <div class="col-md-3 d-flex align-items-center gap-2">
           ${studentBadgeHtml(student, 48)}
           <div>
-            <div class="fw-bold text-sm text-white">${student.name}</div>
-            <div class="text-xs text-teal font-monospace">${student.admissionNo}</div>
+            <div class="fw-bold text-sm text-white">${escapeHtmlAdmin(student.name)}</div>
+            <div class="text-xs text-teal font-monospace">${escapeHtmlAdmin(student.admissionNo)}</div>
           </div>
         </div>
         <div class="col-md-3">
@@ -779,22 +779,22 @@ function renderAdminStaff() {
       <td>
         <div class="d-flex align-items-center gap-2">
           ${accountBadgeHtml(st)}
-          <span class="fw-bold text-white text-sm">${st.name}</span>
+          <span class="fw-bold text-white text-sm">${escapeHtmlAdmin(st.name)}</span>
         </div>
       </td>
       <td>
-        <div class="font-monospace text-xs text-teal">${st.staffId || 'STAFF'}</div>
-        <div class="text-xs text-muted">${st.email || ''}</div>
+        <div class="font-monospace text-xs text-teal">${escapeHtmlAdmin(st.staffId || 'STAFF')}</div>
+        <div class="text-xs text-muted">${escapeHtmlAdmin(st.email || '')}</div>
       </td>
       <td>
         <span class="badge ${st.role === 'admin' ? 'bg-primary' : 'bg-secondary bg-opacity-25 text-teal'} text-xs">
-          ${st.roleTitle || (st.role === 'admin' ? 'Principal & Admin' : 'Educator')}
+          ${escapeHtmlAdmin(st.roleTitle || (st.role === 'admin' ? 'Principal & Admin' : 'Educator'))}
         </span>
       </td>
-      <td><span class="text-xs text-light">${(st.subjects || ['General']).join(', ')}</span></td>
+      <td><span class="text-xs text-light">${escapeHtmlAdmin((st.subjects || ['General']).join(', '))}</span></td>
       <td>
-        <span class="text-xs text-muted font-monospace">${(st.classes || ['All']).join(', ')}</span>
-        <div class="text-xs text-teal">${st.department || (st.role === 'admin' ? 'Administration' : '—')}</div>
+        <span class="text-xs text-muted font-monospace">${escapeHtmlAdmin((st.classes || ['All']).join(', '))}</span>
+        <div class="text-xs text-teal">${escapeHtmlAdmin(st.department || (st.role === 'admin' ? 'Administration' : '—'))}</div>
       </td>
       <td class="text-end">
         ${st.role === 'admin' ? '<span class="text-xs text-muted">Master Admin</span>' : `
@@ -1447,7 +1447,7 @@ function showToast(type = 'info', title = '', message = '', durationMs = 3500) {
 }
 
 /**
- * Sidebar sections — Classes, Subjects, Assignments & Announcements.
+ * Sidebar sections — Classes, Subjects & Announcements.
  * All read-only views over the existing school catalogue and resources.
  */
 function escapeHtmlAdmin(str) {
@@ -1494,34 +1494,6 @@ function renderAdminSidebarSections() {
         </div>
       </div>
     `).join('');
-  }
-
-  // ── Assignments overview (published assignment resources across teachers) ──
-  const assignmentsEl = document.getElementById('admin-assignments-list');
-  if (assignmentsEl) {
-    const assignments = (appState.resources || []).filter(r =>
-      r.status === 'published' && r.approved !== false && r.isAssignment);
-    if (assignments.length === 0) {
-      assignmentsEl.innerHTML = `
-        <div class="text-center py-4">
-          <i class="bi bi-journal-check fs-1 text-muted d-block mb-2"></i>
-          <p class="text-sm text-muted mb-0">No assignments published yet. Teachers' assignment materials will appear here.</p>
-        </div>
-      `;
-    } else {
-      assignmentsEl.innerHTML = assignments.map(a => `
-        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 p-3 mb-2 rounded" style="background:rgba(15,23,42,0.55);border:1px solid rgba(148,163,184,0.16);">
-          <div>
-            <div class="fw-bold text-sm text-white">${escapeHtmlAdmin(a.title || 'Untitled assignment')}</div>
-            <div class="text-xs text-muted mt-1">
-              ${a.subject ? `<span class="me-2"><i class="bi bi-book me-1"></i>${escapeHtmlAdmin(a.subject)}</span>` : ''}
-              ${a.class ? `<span class="me-2"><i class="bi bi-people me-1"></i>${escapeHtmlAdmin(a.class)}</span>` : ''}
-              ${a.uploadedBy ? `<span><i class="bi bi-person me-1"></i>${escapeHtmlAdmin(a.uploadedBy)}</span>` : ''}
-            </div>
-          </div>
-        </div>
-      `).join('');
-    }
   }
 }
 

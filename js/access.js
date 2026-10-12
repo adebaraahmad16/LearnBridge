@@ -1,5 +1,5 @@
 /**
- * LearnBridge — Teacher Class Assignment & Access Control Module (shared)
+ * LearnBridge — Teacher Class Allocation & Access Control Module (shared)
  *
  * Establishes the single source of truth for the school's class catalogue and
  * enforces the relationship the whole portal is built on:
@@ -110,7 +110,7 @@ const Access = (() => {
 
   /**
    * True when two class names refer to the same class.
-   * Legacy fallback: a bare "JSS 1" assignment matches every "JSS 1A–E" arm
+   * Legacy fallback: a bare "JSS 1" mapping matches every "JSS 1A–E" arm
    * (and vice versa) so pre-arm records keep working.
    */
   function classMatches(a, b) {
@@ -183,7 +183,7 @@ const Access = (() => {
 
   /**
    * The class this teacher monitors as Class Teacher ("" when none assigned).
-   * Stored separately from the subject-teaching assignment (see §4 of the
+   * Stored separately from the subject-teaching allocation (see §4 of the
    * school rules) — e.g. Teacher → Class Teacher → JSS 1A.
    */
   function classTeacherOfClass(teacher) {

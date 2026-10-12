@@ -21,7 +21,7 @@ const currentStaff =
  * ─── Teacher scope ───────────────────────────────────────────────────────────
  * Teacher → Department → Assigned Classes → Authorized Students/Results/Resources.
  * Every class list, student list and result/resource lookup on this dashboard is
- * derived from the logged-in teacher's own assignment — never from the full
+ * derived from the logged-in teacher's own allocated classes — never from the full
  * school roster. All checks are funnelled through the shared Access module so a
  * tampered student id or class value is rejected at the data level.
  */
@@ -74,7 +74,7 @@ const RESOURCE_TYPE_RULES = {
   pdf: {
     label: 'PDF Document', icon: 'bi-file-earmark-pdf', color: 'bg-danger bg-opacity-25 text-danger',
     accept: ['application/pdf'], extensions: ['.pdf'],
-    hint: 'Lecture notes, textbooks, revision materials, past questions, study guides, handouts, assignments.'
+    hint: 'Lecture notes, textbooks, revision materials, past questions, study guides, handouts.'
   },
   video: {
     label: 'Video', icon: 'bi-file-earmark-play', color: 'bg-primary bg-opacity-25 text-primary',
@@ -85,7 +85,7 @@ const RESOURCE_TYPE_RULES = {
     label: 'Word Document', icon: 'bi-file-earmark-word', color: 'bg-primary bg-opacity-25 text-info',
     accept: ['application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/plain'],
     extensions: ['.doc', '.docx', '.txt'],
-    hint: 'Assignments, essays, worksheets and printable handouts.'
+    hint: 'Essays, worksheets and printable handouts.'
   },
   presentation: {
     label: 'Presentation', icon: 'bi-file-earmark-slides', color: 'bg-warning bg-opacity-25 text-warning',
@@ -156,7 +156,7 @@ function initStaffDashboard() {
   renderStaffStudents();
   renderStaffSidebarSections();
 
-  // Class lists are always limited to the signed-in teacher's own assignment.
+  // Class lists are always limited to the signed-in teacher's own allocated classes.
   populateStaffResultForm();
   populateUploadLevels();
   populateUploadDepartments();
@@ -1661,9 +1661,8 @@ function showToast(type = 'info', title = '', message = '', durationMs = 3500) {
 }
 
 /**
- * Sidebar sections — Assignments, Announcements & Profile.
- * Assignments: the logged-in teacher's own published resources flagged as
- * assignments. Announcements: the Principal's school-wide notice (read-only).
+ * Sidebar sections — Announcements & Profile.
+ * Announcements: the Principal's school-wide notice (read-only).
  */
 function escapeHtml(str) {
   return String(str == null ? '' : str)
@@ -1675,41 +1674,6 @@ function escapeHtml(str) {
 }
 
 function renderStaffSidebarSections() {
-  // ── Assignments (teacher's own) ──
-  const listEl = document.getElementById('staff-assignments-list');
-  if (listEl) {
-    const mine = (appState.resources || []).filter(r =>
-      isVisibleToCurrentStaff(r) && r.status === 'published' && r.approved !== false && r.isAssignment);
-
-    if (mine.length === 0) {
-      listEl.innerHTML = `
-        <div class="text-center py-4">
-          <i class="bi bi-journal-check fs-1 text-muted d-block mb-2"></i>
-          <p class="text-sm text-muted mb-1">No assignments set yet.</p>
-          <p class="text-xs text-muted mb-0">Tick “Mark as assignment” in the New Material form to publish take-home tasks for your classes.</p>
-        </div>
-      `;
-    } else {
-      listEl.innerHTML = mine.map(a => `
-        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 p-3 mb-2 rounded" style="background:rgba(15,23,42,0.55);border:1px solid rgba(148,163,184,0.16);">
-          <div>
-            <div class="fw-bold text-sm text-white">${escapeHtml(a.title || 'Untitled assignment')}</div>
-            <div class="text-xs text-muted mt-1">
-              ${a.subject ? `<span class="me-2"><i class="bi bi-book me-1"></i>${escapeHtml(a.subject)}</span>` : ''}
-              ${a.class ? `<span class="me-2"><i class="bi bi-people me-1"></i>${escapeHtml(a.class)}</span>` : ''}
-              ${a.uploadedAt ? `<span><i class="bi bi-calendar me-1"></i>${new Date(a.uploadedAt).toLocaleDateString()}</span>` : ''}
-            </div>
-          </div>
-          <div class="text-md-end">
-            <button class="btn btn-sm btn-hub-outline" onclick="openResourcePreview('${a.id}')">
-              <i class="bi bi-eye me-1"></i> Preview
-            </button>
-          </div>
-        </div>
-      `).join('');
-    }
-  }
-
   // ── Announcements (read-only notice from the Principal) ──
   const annEl = document.getElementById('staff-announcement-display');
   if (annEl) {
